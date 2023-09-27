@@ -14,7 +14,7 @@ public class MecanumDriveCommand extends CommandBase {
     private DoubleSupplier forwardDrive;
     private DoubleSupplier rotateDrive;
     private DoubleSupplier strafeDrive;
-    private BooleanSupplier slowMotion;
+    private BooleanSupplier speedBooost;
     private Telemetry telemetry;
     private static double SLOW_MOTION_DIVISOR=3.0;
 
@@ -22,30 +22,37 @@ public class MecanumDriveCommand extends CommandBase {
                                DoubleSupplier forwardDrive,
                                DoubleSupplier rotateDrive,
                                DoubleSupplier strafeDrive,
-                               BooleanSupplier slowMotion,
+                               BooleanSupplier speedBooost,
                                Telemetry telemetry) {
         this.mecanumDriveSubsystem = mecanumDriveSubsystem;
         this.forwardDrive = forwardDrive;
         this.rotateDrive = rotateDrive;
         this.strafeDrive = strafeDrive;
-        this.slowMotion = slowMotion;
+        this.speedBooost = speedBooost;
         this.telemetry = telemetry;
         addRequirements(mecanumDriveSubsystem);
     }
 
     @Override
+    public void initialize() {
+        telemetry.speak("speedBooost");
+    }
+
+    @Override
     public void execute() {
-        if (!slowMotion.getAsBoolean()) {
-            mecanumDriveSubsystem.drive(
-                    forwardDrive.getAsDouble()/SLOW_MOTION_DIVISOR,
-                    rotateDrive.getAsDouble()/SLOW_MOTION_DIVISOR,
-                    strafeDrive.getAsDouble()/SLOW_MOTION_DIVISOR);
-        }
-        else {
+        telemetry.addData("speedBooost",speedBooost.getAsBoolean());
+        if (speedBooost.getAsBoolean()) {
             mecanumDriveSubsystem.drive(
                     forwardDrive.getAsDouble(),
                     rotateDrive.getAsDouble(),
                     strafeDrive.getAsDouble());
+        }
+        else {
+
+            mecanumDriveSubsystem.drive(
+                    forwardDrive.getAsDouble()/SLOW_MOTION_DIVISOR,
+                    rotateDrive.getAsDouble()/SLOW_MOTION_DIVISOR,
+                    strafeDrive.getAsDouble()/SLOW_MOTION_DIVISOR);
         }
     }
 }

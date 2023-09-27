@@ -12,10 +12,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class MecanumDriveSubsystem extends SubsystemBase {
 
-    private MecanumDrive drive;
-    private GamepadEx driverOp;
     private Telemetry telemetry;
-    private ImuSubsystem imuSubsystem;
     private MecanumDrive mecanumDrive;
     private Motor leftBackDrive;
     private Motor rightBackDrive;
@@ -24,18 +21,12 @@ public class MecanumDriveSubsystem extends SubsystemBase {
     private PIDController turnPID;
 
 
-    public MecanumDriveSubsystem(HardwareMap hardwareMap, Telemetry telemetry, ImuSubsystem imuSubsystem) {
+    public MecanumDriveSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
-        this.imuSubsystem = imuSubsystem;
         leftFrontDrive = new Motor(hardwareMap, "LeftFrontDrive");
         rightFrontDrive = new Motor(hardwareMap, "RightFrontDrive");
         leftBackDrive = new Motor(hardwareMap, "LeftBackDrive");
         rightBackDrive = new Motor(hardwareMap, "RightBackDrive");
-
-//        rightFrontDrive.encoder.setDistancePerPulse(distanceInchPerPulse);
-//        leftFrontDrive.encoder.setDistancePerPulse(distanceInchPerPulse);
-//        rightBackDrive.encoder.setDistancePerPulse(distanceInchPerPulse);
-//        leftBackDrive.encoder.setDistancePerPulse(distanceInchPerPulse);
 
         leftFrontDrive.motor.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.motor.setDirection(DcMotor.Direction.REVERSE);
@@ -74,16 +65,6 @@ public class MecanumDriveSubsystem extends SubsystemBase {
     }
 
 
-    public double getLeftBackDrivePosition(){
-        return leftBackDrive.getCurrentPosition();
-    }
 
-    public double getEncoderPosition(){
-        return leftBackDrive.getCurrentPosition();
-    }
 
-//    public void periodic() {
-//        double TPower = turnPID.calculate(imuPosition, turn);
-//        telemetry.addData("encoder position", getEncoderPosition());
-//    }
 }
