@@ -16,7 +16,7 @@ public class MecanumDriveCommand extends CommandBase {
     private DoubleSupplier strafeDrive;
     private BooleanSupplier speedBooost;
     private Telemetry telemetry;
-    private static double SLOW_MOTION_DIVISOR=3.0;
+    private final static double SLOW_MOTION_DIVISOR=3.0;
 
     public MecanumDriveCommand(MecanumDriveSubsystem mecanumDriveSubsystem,
                                DoubleSupplier forwardDrive,
