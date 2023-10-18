@@ -63,9 +63,16 @@ public class SensorHuskyLens extends LinearOpMode {
 
     private HuskyLens huskyLens;
 
+
+
+    public enum PixelPosition {
+        LEFT,
+        CENTER,
+        RIGHT
+
+    }
     @Override
-    public void runOpMode()
-    {
+    public void runOpMode() {
         huskyLens = hardwareMap.get(HuskyLens.class, "huskylens");
 
         /*
@@ -108,7 +115,6 @@ public class SensorHuskyLens extends LinearOpMode {
          * found in the enumeration HuskyLens.Algorithm.
          */
         huskyLens.selectAlgorithm(HuskyLens.Algorithm.OBJECT_TRACKING);
-
         telemetry.update();
         waitForStart();
 
@@ -118,7 +124,7 @@ public class SensorHuskyLens extends LinearOpMode {
          *
          * Note again that the device only recognizes the 36h11 family of tags out of the box.
          */
-        while(opModeIsActive()) {
+        while (opModeIsActive()) {
             if (!rateLimit.hasExpired()) {
                 continue;
             }
@@ -135,11 +141,35 @@ public class SensorHuskyLens extends LinearOpMode {
              */
             HuskyLens.Block[] blocks = huskyLens.blocks();
             telemetry.addData("Block count", blocks.length);
+            PixelPosition pixelPosition;
             for (int i = 0; i < blocks.length; i++) {
                 telemetry.addData("Block", blocks[i].toString());
+
+                telemetry.addData("X", blocks[i].x);
+
+                if (blocks[i].x < 80) {
+
+                    pixelPosition = PixelPosition.LEFT;
+                }
+
+                else if (blocks[i].x > 240) {
+
+                    pixelPosition = PixelPosition.RIGHT;
+
+                }
+
+                else {
+
+                    pixelPosition = PixelPosition.CENTER;
+
+                }
+
+                telemetry.addData("position", pixelPosition);
+
             }
 
             telemetry.update();
         }
     }
+
 }
