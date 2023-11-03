@@ -8,11 +8,13 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.teamcode.commands.ElevatorVerticalCommand;
 import org.firstinspires.ftc.teamcode.commands.MecanumDriveCommand;
+import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ElevatorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.TelemetryUpdateSubsystem;
+import org.firstinspires.ftc.teamcode.util.ArmPosition;
 
 import java.util.function.DoubleSupplier;
 
@@ -26,6 +28,7 @@ public class MatchTeleop extends CommandOpMode {
      private TelemetryUpdateSubsystem telemetryUpdateSubsystem;
     private ImuSubsystem imuSubsystem;
     private ClawSubsystem clawSubsystem;
+    private ArmSubsystem armSubsystem;
 
     @Override
     public void initialize() {
@@ -36,6 +39,7 @@ public class MatchTeleop extends CommandOpMode {
         imuSubsystem = new ImuSubsystem(hardwareMap, telemetry);
         elevatorSubsystem = new ElevatorSubsystem(hardwareMap, telemetry);
         clawSubsystem = new ClawSubsystem(hardwareMap, telemetry);
+        armSubsystem = new ArmSubsystem(hardwareMap, telemetry);
         MecanumDriveCommand driveMecanumCommand = new MecanumDriveCommand(mecanumDriveSubsystem,
                 () -> -driver.getLeftY(),
                 () -> driver.getRightX(),
@@ -47,6 +51,8 @@ public class MatchTeleop extends CommandOpMode {
 
         telemetry);
         operator.getGamepadButton(GamepadKeys.Button.X).whenPressed(()-> clawSubsystem.toggleClaw());
+        operator.getGamepadButton(GamepadKeys.Button.Y).whenPressed(()-> armSubsystem.gotoPosition(ArmPosition.OUT));
+        operator.getGamepadButton(GamepadKeys.Button.A).whenPressed(()-> armSubsystem.gotoPosition(ArmPosition.IN));
         schedule(driveMecanumCommand, elevatorVerticalCommand);
 
     }
