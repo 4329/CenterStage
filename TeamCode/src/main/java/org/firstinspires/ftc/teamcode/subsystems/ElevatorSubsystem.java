@@ -18,6 +18,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         this.telemetry = telemetry;
         elevatorMotor = new Motor(hm, "elevatorMotor");
         elevatorMotor.setDistancePerPulse(DISTANCEPERPULSE);
+        this.elevatorMotor.setInverted(true);
         this.elevatorMotor.setRunMode(Motor.RunMode.PositionControl);
         this.elevatorMotor.setPositionCoefficient(0.5);
         this.elevatorMotor.setPositionTolerance(3.14159265358979);

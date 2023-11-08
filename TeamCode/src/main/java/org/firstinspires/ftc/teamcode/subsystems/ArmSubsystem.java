@@ -13,7 +13,8 @@ public class ArmSubsystem extends SubsystemBase {
     private int setPoint;
 
     public ArmSubsystem(HardwareMap hm, Telemetry jerry) {
-        this.armMotor = hm.get(Motor.class, "armMotor");
+        this.armMotor = new Motor(hm, "armMotor");
+        this.armMotor.setInverted(false);
         this.telemetry = jerry;
         this.armMotor.setRunMode(Motor.RunMode.PositionControl);
         this.armMotor.setPositionCoefficient(0.5);

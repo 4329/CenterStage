@@ -12,20 +12,30 @@ public class ClawSubsystem extends SubsystemBase {
     private Servo servo;
     private boolean closed = true;
 
+
     public ClawSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
         this.servo = hardwareMap.get(Servo.class, "clawServo");
+        open();
+
 
     }
+
+
+    @Override
+    public void periodic() {
+        telemetry.addLine("servo position is:" + servo.getPosition());
+    }
+
     public void open() {
-        servo.setPosition(0.5);
+        servo.setPosition(0);
         closed = false;
 
         telemetry.addLine("claw open");
 
     }
     public void close() {
-        servo.setPosition(0);
+        servo.setPosition(0.21);
         closed = true;
 
         telemetry.addLine("claw closed");
@@ -35,11 +45,17 @@ public class ClawSubsystem extends SubsystemBase {
     public void toggleClaw() {
         if (closed == true) {
             open();
+
+            telemetry.addLine("clawOpen");
         }
         else {
             close();
+
+            telemetry.addLine("clawClosed");
         }
     }
+
+
 
 
 }
