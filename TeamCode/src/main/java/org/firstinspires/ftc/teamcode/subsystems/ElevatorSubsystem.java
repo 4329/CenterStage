@@ -5,9 +5,10 @@ import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.util.ElevatorPosition;
 
 public class ElevatorSubsystem extends SubsystemBase {
-    private final double setPoint;
+    private int setPoint;
     private Motor elevatorMotor;
     private Telemetry telemetry;
 
@@ -19,16 +20,51 @@ public class ElevatorSubsystem extends SubsystemBase {
         elevatorMotor.setDistancePerPulse(DISTANCEPERPULSE);
         this.elevatorMotor.setRunMode(Motor.RunMode.PositionControl);
         this.elevatorMotor.setPositionCoefficient(0.5);
-        this.elevatorMotor.setPositionTolerance(0.314159265358979);
+        this.elevatorMotor.setPositionTolerance(3.14159265358979);
         this.elevatorMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         this.setPoint = 0;
         this.elevatorMotor.encoder.reset();
 
     }
 
-    public void run(double up) {
+    public void goToPosition(ElevatorPosition sammy) {
+        this.setPoint = sammy.getPosition();
 
-        elevatorMotor.set(up);
+        this.elevatorMotor.setTargetPosition(this.setPoint);
+
+        telemetry.addLine("Elevator setPoint:" + setPoint);
+
+
     }
 
+
+    @Override
+    public void periodic() {
+        this.elevatorMotor.set(0.5);
+    }
+
+    public void stop() {
+
+        this.elevatorMotor.stopMotor();
+    }
+
+    public void move(double stickValue) {
+
+//        setPoint += (stickValue * 5.0);
+
+        int newSetPoint = (int) (setPoint + (stickValue * 5.0));
+
+        if (newSetPoint < 0) {
+
+            newSetPoint = 0;
+
+        }
+
+        setPoint = newSetPoint;
+
+        this.elevatorMotor.setTargetPosition(setPoint);
+
+        telemetry.addLine("Elevator setPoint:" + setPoint);
+
+    }
 }

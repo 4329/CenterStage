@@ -23,12 +23,16 @@ public class ElevatorVerticalCommand extends CommandBase {
     @Override
     public void execute() {
         telemetry.addLine("Elevator hath runneth!");
-        elevatorSubsystem.run(elevatorPower.getAsDouble());
+        elevatorSubsystem.move(elevatorPower.getAsDouble());
     }
 
 
-    public void end() {
-        elevatorSubsystem.run(0);
+
+
+    @Override
+    public void end(boolean interrupted) {
+
+    elevatorSubsystem.stop();
 
     }
 }

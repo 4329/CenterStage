@@ -20,10 +20,16 @@ public class ClawSubsystem extends SubsystemBase {
     public void open() {
         servo.setPosition(0.5);
         closed = false;
+
+        telemetry.addLine("claw open");
+
     }
     public void close() {
         servo.setPosition(0);
         closed = true;
+
+        telemetry.addLine("claw closed");
+
     }
 
     public void toggleClaw() {
@@ -34,4 +40,6 @@ public class ClawSubsystem extends SubsystemBase {
             close();
         }
     }
+
+
 }

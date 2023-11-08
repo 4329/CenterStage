@@ -10,25 +10,35 @@ import org.firstinspires.ftc.teamcode.util.ArmPosition;
 public class ArmSubsystem extends SubsystemBase {
     private Motor armMotor;
     private Telemetry telemetry;
-    private double setPoint;
+    private int setPoint;
+
     public ArmSubsystem(HardwareMap hm, Telemetry jerry) {
         this.armMotor = hm.get(Motor.class, "armMotor");
         this.telemetry = jerry;
         this.armMotor.setRunMode(Motor.RunMode.PositionControl);
         this.armMotor.setPositionCoefficient(0.5);
-        this.armMotor.setPositionTolerance(0.314159265358979);
+        this.armMotor.setPositionTolerance(3.141592653597);
         this.armMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         this.setPoint = 0;
         this.armMotor.encoder.reset();
 
     }
 
-    public void gotoPosition(ArmPosition timmy){
+    public void goToPosition(ArmPosition timmy) {
         this.setPoint = timmy.getPosition();
+
+        this.armMotor.setTargetPosition(this.setPoint);
+
+        telemetry.addLine("Arm setPoint:" + setPoint);
+
+
+
+
     }
 
     @Override
     public void periodic() {
-        this.armMotor.setTargetDistance(this.setPoint);
+        this.armMotor.set(0.5);
     }
+
 }

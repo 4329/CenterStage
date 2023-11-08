@@ -1,10 +1,11 @@
 package org.firstinspires.ftc.teamcode.util;
 
-public enum ArmPosition {
-    OUT(20), IN(0);
+public enum ElevatorPosition {
+
+    UP(20), DOWN(0);
     private int position;
 
-    private ArmPosition(int position) {
+    private ElevatorPosition(int position) {
         this.position = position;
     }
 
