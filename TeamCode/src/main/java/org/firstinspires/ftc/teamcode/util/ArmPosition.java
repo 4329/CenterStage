@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.util;
 
 public enum ArmPosition {
-    OUT(20), IN(0);
+    OUT(60), IN(0);
     private int position;
 
     private ArmPosition(int position) {

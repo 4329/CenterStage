@@ -53,7 +53,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
 //        setPoint += (stickValue * 5.0);
 
-        int newSetPoint = (int) (setPoint + (stickValue * 5.0));
+        int newSetPoint = (int) (setPoint + (stickValue * 20.0));
 
         if (newSetPoint < 0) {
 
@@ -66,6 +66,20 @@ public class ElevatorSubsystem extends SubsystemBase {
         this.elevatorMotor.setTargetPosition(setPoint);
 
         telemetry.addLine("Elevator setPoint:" + setPoint);
+
+    }
+
+    public void levelUp() {
+
+        ElevatorPosition up = ElevatorPosition.nextHighest(setPoint);
+        goToPosition(up);
+    }
+
+    public void levelDown() {
+
+        ElevatorPosition down = ElevatorPosition.nextLowest(setPoint);
+        goToPosition(down);
+
 
     }
 }

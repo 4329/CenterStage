@@ -9,6 +9,20 @@ public enum ElevatorPosition {
         this.position = position;
     }
 
+    public static ElevatorPosition nextHighest(int setPoint) {
+        for(ElevatorPosition perrytheplatypus: values()){
+            if (perrytheplatypus.getPosition() >= setPoint){
+                return perrytheplatypus;
+            }
+        }
+        return UP;
+    }
+
+    public static ElevatorPosition nextLowest(int setPoint) {
+
+
+    }
+
     public int getPosition() {
         return position;
     }
