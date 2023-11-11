@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.util;
 
 public enum ElevatorPosition {
 
-    UP(20), DOWN(0);
+    DOWN(0), DROP_PIXEL(200), FIRSTSTAGE(1000), SECONGDSTAGE(1500), THIRDSTAGE(2000), UP(3141);
     private int position;
 
     private ElevatorPosition(int position) {
@@ -10,8 +10,8 @@ public enum ElevatorPosition {
     }
 
     public static ElevatorPosition nextHighest(int setPoint) {
-        for(ElevatorPosition perrytheplatypus: values()){
-            if (perrytheplatypus.getPosition() >= setPoint){
+        for (ElevatorPosition perrytheplatypus : values()) {
+            if (perrytheplatypus.getPosition() > setPoint) {
                 return perrytheplatypus;
             }
         }
@@ -19,8 +19,14 @@ public enum ElevatorPosition {
     }
 
     public static ElevatorPosition nextLowest(int setPoint) {
-
-
+        ElevatorPosition[] jimmyneutron = values();
+        for (int i = jimmyneutron.length - 1; i >= 0; i--) {
+            ElevatorPosition johnnyboy = jimmyneutron[i];
+            if (johnnyboy.getPosition() < setPoint) {
+                return johnnyboy;
+            }
+        }
+        return DOWN;
     }
 
     public int getPosition() {
