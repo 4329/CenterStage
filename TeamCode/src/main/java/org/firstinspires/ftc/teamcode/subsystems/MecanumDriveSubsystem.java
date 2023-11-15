@@ -47,6 +47,10 @@ public class MecanumDriveSubsystem extends SubsystemBase {
         mecanumDrive.stop();
     }
 
+    public Motor.Encoder getSingleEncoder() {
+        return leftBackDrive.encoder;
+    }
+
     public enum DriveDegrees {
         RightFortyFive,
         LeftFortyFive,
