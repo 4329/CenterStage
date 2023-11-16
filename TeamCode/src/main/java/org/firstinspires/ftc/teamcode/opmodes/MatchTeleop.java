@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
+import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
@@ -7,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.commands.ElevatorVerticalCommand;
 import org.firstinspires.ftc.teamcode.commands.MecanumDriveCommand;
+import org.firstinspires.ftc.teamcode.commands.TotalZeroCommandGroup;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ElevatorSubsystem;
@@ -26,6 +28,7 @@ public class MatchTeleop extends CommandOpMode {
     private ImuSubsystem imuSubsystem;
     private ClawSubsystem clawSubsystem;
     private ArmSubsystem armSubsystem;
+    private Command totalZeroCommandGroup;
 
     @Override
     public void initialize() {
@@ -37,6 +40,7 @@ public class MatchTeleop extends CommandOpMode {
         elevatorSubsystem = new ElevatorSubsystem(hardwareMap, telemetry);
         clawSubsystem = new ClawSubsystem(hardwareMap, telemetry);
         armSubsystem = new ArmSubsystem(hardwareMap, telemetry);
+        totalZeroCommandGroup = TotalZeroCommandGroup.totalZero(armSubsystem, clawSubsystem, elevatorSubsystem, telemetry);
         MecanumDriveCommand driveMecanumCommand = new MecanumDriveCommand(mecanumDriveSubsystem,
                 () -> -driver.getLeftY(),
                 () -> driver.getRightX(),
@@ -53,6 +57,9 @@ public class MatchTeleop extends CommandOpMode {
         schedule(driveMecanumCommand, elevatorVerticalCommand);
         operator.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(()-> elevatorSubsystem.levelUp());
         operator.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(()-> elevatorSubsystem.levelDown());
+        operator.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(totalZeroCommandGroup);
+
+
 
 
     }

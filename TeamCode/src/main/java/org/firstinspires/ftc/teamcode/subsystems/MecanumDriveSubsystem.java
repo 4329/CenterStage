@@ -43,6 +43,14 @@ public class MecanumDriveSubsystem extends SubsystemBase {
         turnPID.setTolerance(15);
     }
 
+    public void stop() {
+        mecanumDrive.stop();
+    }
+
+    public Motor.Encoder getSingleEncoder() {
+        return leftBackDrive.encoder;
+    }
+
     public enum DriveDegrees {
         RightFortyFive,
         LeftFortyFive,
