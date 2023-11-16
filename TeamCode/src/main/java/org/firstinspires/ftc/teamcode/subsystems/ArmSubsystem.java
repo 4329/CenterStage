@@ -47,4 +47,12 @@ public class ArmSubsystem extends SubsystemBase {
         telemetry.addLine("armError: " + Math.abs(setPoint - armMotor.getCurrentPosition()));
     }
 
+    public boolean armAtPosition() {
+
+        return armMotor.atTargetPosition();
+    }
+
+    public void stop() {
+        this.armMotor.stopMotor();
+    }
 }
