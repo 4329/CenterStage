@@ -55,7 +55,7 @@ public class MatchTeleop extends CommandOpMode {
                 () -> operator.getLeftY(),
 
         telemetry);
-        operator.getGamepadButton(GamepadKeys.Button.X).whenPressed(()-> clawSubsystem.toggleClaw());
+       // operator.getGamepadButton(GamepadKeys.Button.).whenPressed(()-> clawSubsystem.toggleClaw());
         operator.getGamepadButton(GamepadKeys.Button.Y).whenPressed(()-> armSubsystem.goToPosition(ArmPosition.OUT));
         operator.getGamepadButton(GamepadKeys.Button.A).whenPressed(()-> armSubsystem.goToPosition(ArmPosition.IN));
         operator.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(()-> elevatorSubsystem.levelUp());
