@@ -82,4 +82,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 
 
     }
+
+    public boolean uThereYet(){
+
+        return elevatorMotor.atTargetPosition();
+
+        }
 }

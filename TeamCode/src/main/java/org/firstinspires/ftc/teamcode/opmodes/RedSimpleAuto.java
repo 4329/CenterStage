@@ -2,14 +2,12 @@ package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandOpMode;
-import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.commands.ElevatorPosCommand;
 import org.firstinspires.ftc.teamcode.commands.EncoderDriveCommand;
-import org.firstinspires.ftc.teamcode.commands.TimedDriveCommand;
 import org.firstinspires.ftc.teamcode.commands.UnInstantCommand;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
@@ -19,10 +17,8 @@ import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.TelemetryUpdateSubsystem;
 import org.firstinspires.ftc.teamcode.util.ElevatorPosition;
 
-import java.util.Base64;
-
-@Autonomous(name = "Simple Blue", group = "1")
-public class BlueSimpleAuto extends CommandOpMode {
+@Autonomous(name = "Simple Red", group = "1")
+public class RedSimpleAuto extends CommandOpMode {
     private MecanumDriveSubsystem mecanumDriveSubsystem;
     private TelemetryUpdateSubsystem telemetryUpdateSubsystem;
     private ImuSubsystem imuSubsystem;
@@ -42,7 +38,7 @@ public class BlueSimpleAuto extends CommandOpMode {
         EncoderDriveCommand driveforward = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 29);
         EncoderDriveCommand backUp = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 6);
 
-        EncoderDriveCommand strafeToCanvas = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -.35, 41);
+        EncoderDriveCommand strafeToCanvas = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, .35, 44);
 
         Command openclaw = new UnInstantCommand(()-> clawSubsystem.open());
         Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.DROP_PIXEL, telemetry);
