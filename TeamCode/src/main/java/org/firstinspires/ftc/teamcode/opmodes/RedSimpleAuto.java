@@ -36,7 +36,7 @@ public class RedSimpleAuto extends CommandOpMode {
         armSubsystem = new ArmSubsystem(hardwareMap, telemetry);
         Command closeclaw = new UnInstantCommand(()-> clawSubsystem.close());
         EncoderDriveCommand driveforward = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 29);
-        EncoderDriveCommand backUp = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 6);
+        EncoderDriveCommand backUp = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 29);
 
         EncoderDriveCommand strafeToCanvas = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, .35, 44);
 

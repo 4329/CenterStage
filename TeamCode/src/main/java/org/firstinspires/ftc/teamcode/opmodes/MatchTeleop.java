@@ -54,13 +54,13 @@ public class MatchTeleop extends CommandOpMode {
                 () -> operator.getLeftY(),
 
         telemetry);
-       // operator.getGamepadButton(GamepadKeys.Button.).whenPressed(()-> clawSubsystem.toggleClaw());
+        operator.getGamepadButton(GamepadKeys.Button.X).whenPressed(()-> clawSubsystem.toggleClaw());
         operator.getGamepadButton(GamepadKeys.Button.Y).whenPressed(()-> armSubsystem.goToPosition(ArmPosition.OUT));
         operator.getGamepadButton(GamepadKeys.Button.A).whenPressed(()-> armSubsystem.goToPosition(ArmPosition.IN));
         operator.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(()-> elevatorSubsystem.levelUp());
         operator.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(()-> elevatorSubsystem.levelDown());
         operator.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(totalZeroCommandGroup);
-        operator.getGamepadButton(GamepadKeys.Button.X).whenPressed(()-> droneSubsystem.launch());
+        operator.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(()-> droneSubsystem.launch());
         schedule(driveMecanumCommand, elevatorVerticalCommand);
 
     }

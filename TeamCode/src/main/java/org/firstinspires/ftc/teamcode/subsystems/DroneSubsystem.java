@@ -40,7 +40,7 @@ public class DroneSubsystem extends SubsystemBase {
     }
 
     public void launch() {
-        servo.setPosition(-0.20);
+        servo.setPosition(0.15);
         launched = true;
 
         telemetry.addLine("drone launched");
