@@ -42,6 +42,15 @@ public class ClawSubsystem extends SubsystemBase {
 
     }
 
+    public void onePixel() {
+        servo.setPosition(0.2875);
+
+        telemetry.addLine("");
+
+        closed = false;
+
+    }
+
     public void toggleClaw() {
         if (closed == true) {
             open();

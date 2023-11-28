@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.commands.MecanumDriveCommand;
 import org.firstinspires.ftc.teamcode.commands.TotalZeroCommandGroup;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.DroneSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ElevatorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
@@ -29,6 +30,7 @@ public class MatchTeleop extends CommandOpMode {
     private ClawSubsystem clawSubsystem;
     private ArmSubsystem armSubsystem;
     private Command totalZeroCommandGroup;
+    private DroneSubsystem droneSubsystem;
 
     @Override
     public void initialize() {
@@ -41,6 +43,7 @@ public class MatchTeleop extends CommandOpMode {
         clawSubsystem = new ClawSubsystem(hardwareMap, telemetry);
         armSubsystem = new ArmSubsystem(hardwareMap, telemetry);
         totalZeroCommandGroup = TotalZeroCommandGroup.totalZero(armSubsystem, clawSubsystem, elevatorSubsystem, telemetry);
+        droneSubsystem = new DroneSubsystem(hardwareMap, telemetry);
         MecanumDriveCommand driveMecanumCommand = new MecanumDriveCommand(mecanumDriveSubsystem,
                 () -> -driver.getLeftY(),
                 () -> driver.getRightX(),
@@ -54,12 +57,13 @@ public class MatchTeleop extends CommandOpMode {
         operator.getGamepadButton(GamepadKeys.Button.X).whenPressed(()-> clawSubsystem.toggleClaw());
         operator.getGamepadButton(GamepadKeys.Button.Y).whenPressed(()-> armSubsystem.goToPosition(ArmPosition.OUT));
         operator.getGamepadButton(GamepadKeys.Button.A).whenPressed(()-> armSubsystem.goToPosition(ArmPosition.IN));
-        schedule(driveMecanumCommand, elevatorVerticalCommand);
         operator.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(()-> elevatorSubsystem.levelUp());
         operator.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(()-> elevatorSubsystem.levelDown());
-        operator.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(totalZeroCommandGroup);
+        operator.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(totalZeroCommandGroup);
+        operator.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(()-> droneSubsystem.launch());
+        operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(()-> clawSubsystem.onePixel());
 
-
+        schedule(driveMecanumCommand, elevatorVerticalCommand);
 
 
     }

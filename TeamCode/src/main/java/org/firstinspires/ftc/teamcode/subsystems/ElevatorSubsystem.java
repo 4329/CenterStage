@@ -41,7 +41,9 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        if(this.elevatorMotor!=null){
         this.elevatorMotor.set(0.5);
+        }
     }
 
     public void stop() {
