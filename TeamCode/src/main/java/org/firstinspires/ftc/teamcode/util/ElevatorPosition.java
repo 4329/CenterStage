@@ -2,7 +2,9 @@ package org.firstinspires.ftc.teamcode.util;
 
 public enum ElevatorPosition {
 
-    DOWN(0), DROP_PIXEL(275), FIRSTSTAGE(1000), SECONGDSTAGE(1500), THIRDSTAGE(2000), UP(3141);
+
+    DOWN(0), DROP_PIXEL(225), FIRSTSTAGE(1000), SECONDSTAGE(1500), THIRDSTAGE(2000), CLIMB(3257);
+
     private int position;
 
     private ElevatorPosition(int position) {
@@ -15,7 +17,7 @@ public enum ElevatorPosition {
                 return perrytheplatypus;
             }
         }
-        return UP;
+        return CLIMB;
     }
 
     public static ElevatorPosition nextLowest(int setPoint) {
