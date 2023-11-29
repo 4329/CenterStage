@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.commands.ElevatorVerticalCommand;
 import org.firstinspires.ftc.teamcode.commands.MecanumDriveCommand;
 import org.firstinspires.ftc.teamcode.commands.TotalZeroCommandGroup;
+import org.firstinspires.ftc.teamcode.commands.TurnToHeadingCommand;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DroneSubsystem;
@@ -50,6 +51,7 @@ public class MatchTeleop extends CommandOpMode {
                 () -> driver.getLeftX(),
                 () -> driver.getButton(GamepadKeys.Button.B),
                 telemetry);
+        driver.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whileHeld(new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, 90));
         ElevatorVerticalCommand elevatorVerticalCommand = new ElevatorVerticalCommand(elevatorSubsystem,
                 () -> operator.getLeftY(),
 
