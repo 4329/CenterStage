@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.commands.ElevatorPosCommand;
 import org.firstinspires.ftc.teamcode.commands.EncoderDriveCommand;
 import org.firstinspires.ftc.teamcode.commands.TimedDriveCommand;
+import org.firstinspires.ftc.teamcode.commands.TurnToHeadingCommand;
 import org.firstinspires.ftc.teamcode.commands.UnInstantCommand;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
@@ -28,6 +29,7 @@ public class BlueSimpleAuto extends CommandOpMode {
     private ImuSubsystem imuSubsystem;
     private ElevatorSubsystem elevatorSubsystem;
     private ClawSubsystem clawSubsystem;
+    private TurnToHeadingCommand turn;
     private ArmSubsystem armSubsystem;
 
     @Override
@@ -38,16 +40,18 @@ public class BlueSimpleAuto extends CommandOpMode {
         elevatorSubsystem = new ElevatorSubsystem(hardwareMap, telemetry);
         clawSubsystem = new ClawSubsystem(hardwareMap, telemetry);
         armSubsystem = new ArmSubsystem(hardwareMap, telemetry);
+
         Command closeclaw = new UnInstantCommand(()-> clawSubsystem.close());
         EncoderDriveCommand driveforward = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 27.5);
         EncoderDriveCommand backUp1 = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 6);
 
         EncoderDriveCommand backUp2 = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 29);
 
-        EncoderDriveCommand strafeToCanvas = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -.35, 41);
+        EncoderDriveCommand driveToCanvas = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 41);
+        turn = new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, 90);
 
         Command openclaw = new UnInstantCommand(()-> clawSubsystem.open());
         Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.DROP_PIXEL, telemetry);
-        schedule(new SequentialCommandGroup(closeclaw, new WaitCommand(800), driveforward, openclaw, new WaitCommand(750), upounopixelo, closeclaw, new WaitCommand(400), backUp1, strafeToCanvas, openclaw, new WaitCommand(400), backUp2));
+        schedule(new SequentialCommandGroup(closeclaw, new WaitCommand(800), driveforward, openclaw, new WaitCommand(750), upounopixelo, closeclaw, new WaitCommand(400), turn, driveToCanvas, openclaw, new WaitCommand(400), backUp2));
     }
 }

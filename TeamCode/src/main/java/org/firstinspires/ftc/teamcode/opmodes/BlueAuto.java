@@ -6,6 +6,8 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.commands.CommandGroups;
 import org.firstinspires.ftc.teamcode.commands.ElevatorPosCommand;
 import org.firstinspires.ftc.teamcode.commands.EncoderDriveCommand;
 import org.firstinspires.ftc.teamcode.commands.TurnToHeadingCommand;
@@ -16,10 +18,12 @@ import org.firstinspires.ftc.teamcode.subsystems.ElevatorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.TelemetryUpdateSubsystem;
+import org.firstinspires.ftc.teamcode.util.Alliance;
 import org.firstinspires.ftc.teamcode.util.ElevatorPosition;
+import org.firstinspires.ftc.teamcode.util.PixelPosition;
 
-@Autonomous(name = "Mid Blue", group = "1")
-public class BlueMidAuto extends CommandOpMode {
+@Autonomous(name = "FullBlueAuto", group = "1")
+public class BlueAuto extends CommandOpMode {
     private MecanumDriveSubsystem mecanumDriveSubsystem;
     private TelemetryUpdateSubsystem telemetryUpdateSubsystem;
     private ImuSubsystem imuSubsystem;
@@ -38,17 +42,12 @@ public class BlueMidAuto extends CommandOpMode {
         clawSubsystem = new ClawSubsystem(hardwareMap, telemetry);
         armSubsystem = new ArmSubsystem(hardwareMap, telemetry);
         Command closeclaw = new UnInstantCommand(()-> clawSubsystem.close());
-        turnToHeadingCommand = new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, 90);
 
-        EncoderDriveCommand driveforward = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 27.5);
-        EncoderDriveCommand backUp1 = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 6);
+        Command dropOffFirstPixel = CommandGroups.dropOffFirstPixel(() -> PixelPosition.RIGHT, Alliance.BLUE, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry,  imuSubsystem);
+        EncoderDriveCommand driveToStart = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 6);
 
-        EncoderDriveCommand backUp2 = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 29);
 
-        EncoderDriveCommand driveToCanvas = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 41);
-
-        Command openclaw = new UnInstantCommand(()-> clawSubsystem.open());
-        Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.DROP_PIXEL, telemetry);
-        schedule(new SequentialCommandGroup(closeclaw, new WaitCommand(800), driveforward, openclaw, new WaitCommand(750), upounopixelo, closeclaw, new WaitCommand(400), backUp1, turnToHeadingCommand, driveToCanvas, openclaw, new WaitCommand(400), backUp2));
+        schedule(new SequentialCommandGroup(closeclaw, new WaitCommand(800), driveToStart,  new WaitCommand(800), dropOffFirstPixel));
     }
+
 }
