@@ -27,7 +27,7 @@ public class TurnToHeadingCommand extends CommandBase {
     @Override
     public void initialize() {
         frcPid.setSetpoint(DesiredAngle);
-        frcPid.setTolerance(0.5);
+        frcPid.setTolerance(0.1);
         frcPid.enableContinuousInput(-180, 180);
     }
 

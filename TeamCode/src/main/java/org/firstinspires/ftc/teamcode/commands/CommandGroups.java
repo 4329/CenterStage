@@ -48,10 +48,7 @@ public class CommandGroups {
 
         Command turnLeft = new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, 90 * allienceDirection);
         Command turnRight = new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, -90 * allienceDirection);
-        Command turnAround = new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, 180 * allienceDirection);
 
-        EncoderDriveCommand strafeRightToLeftPixel = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35, 22);
-        EncoderDriveCommand driveToStart = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 8);
 
         Command openclaw = new UnInstantCommand(()-> clawSubsystem.open());
         Command closeclaw = new UnInstantCommand(()-> clawSubsystem.close());
@@ -60,22 +57,47 @@ public class CommandGroups {
 
         if (PixelPosition.LEFT.equals(detectedPixelPosition)) {
 
-            return new SequentialCommandGroup(turnLeft);
+
+            EncoderDriveCommand drive1 = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 1.5);
+            EncoderDriveCommand backUp1 = new EncoderDriveCommand(mecanumDriveSubsystem, 0.35, 0, 0, 3);
+            EncoderDriveCommand strafe = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35, 17);
+
+
+            EncoderDriveCommand strafeRightToLeftPixel = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, 0.35, 26);
+
+
+
+            return new SequentialCommandGroup(turnLeft,
+                    new WaitCommand(75),
+                    drive1,
+                    strafeRightToLeftPixel,
+                    openclaw,
+                    new WaitCommand(750),
+                    upounopixelo,
+                    closeclaw,
+                    new WaitCommand(400),
+                    backUp1,
+                    strafe
+
+            );
 
         } else if (PixelPosition.RIGHT.equals(detectedPixelPosition)) {
 
-            EncoderDriveCommand strafeLeftToRightPixel = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35, 17);
-            EncoderDriveCommand driveforward = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, -4);
-            EncoderDriveCommand backUp2 = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 6);
+            EncoderDriveCommand strafeLeftToRightPixel = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35, 21);
+            EncoderDriveCommand driveforward = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 7);
+            EncoderDriveCommand backUp2 = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 8);
+            Command turnAround = new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, 90 * allienceDirection);
 
 
             return new SequentialCommandGroup(turnRight,
+                    new WaitCommand(75),
                     strafeLeftToRightPixel,
                     driveforward,
                     openclaw,
                     new WaitCommand(750),
                     upounopixelo,
                     closeclaw,
+                    new WaitCommand(400),
                     backUp2,
                     turnAround
                     );
@@ -92,7 +114,8 @@ public class CommandGroups {
                     new WaitCommand(750),
                     upounopixelo,
                     closeclaw,
-                    new WaitCommand(400), backUp1,
+                    new WaitCommand(400),
+                    backUp1,
                     turnLeft
                     );
 

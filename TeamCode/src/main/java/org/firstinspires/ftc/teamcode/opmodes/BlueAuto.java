@@ -35,6 +35,9 @@ public class BlueAuto extends CommandOpMode {
 
     @Override
     public void initialize() {
+
+        telemetry.speak("blue blue blue");
+
         mecanumDriveSubsystem = new MecanumDriveSubsystem(hardwareMap, telemetry);
         telemetryUpdateSubsystem = new TelemetryUpdateSubsystem(telemetry);
         imuSubsystem = new ImuSubsystem(hardwareMap, telemetry);
@@ -43,7 +46,7 @@ public class BlueAuto extends CommandOpMode {
         armSubsystem = new ArmSubsystem(hardwareMap, telemetry);
         Command closeclaw = new UnInstantCommand(()-> clawSubsystem.close());
 
-        Command dropOffFirstPixel = CommandGroups.dropOffFirstPixel(() -> PixelPosition.RIGHT, Alliance.BLUE, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry,  imuSubsystem);
+        Command dropOffFirstPixel = CommandGroups.dropOffFirstPixel(() -> PixelPosition.LEFT, Alliance.BLUE, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry,  imuSubsystem);
         EncoderDriveCommand driveToStart = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 6);
 
 
