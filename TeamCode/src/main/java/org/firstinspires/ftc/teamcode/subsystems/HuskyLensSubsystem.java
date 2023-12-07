@@ -12,13 +12,15 @@ import org.firstinspires.ftc.teamcode.util.PixelPosition;
 public class HuskyLensSubsystem extends SubsystemBase {
 
     private HuskyLens huskyLens;
+
+    private Telemetry telemetry;
     private HuskyLens.Block lastBlock;
 
     public HuskyLensSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
 
-        huskyLens = hardwareMap.get(HuskyLens.class, "huskylens");
+        huskyLens = hardwareMap.get(HuskyLens.class, "huskyLens");
         huskyLens.selectAlgorithm(HuskyLens.Algorithm.OBJECT_TRACKING);
-
+        this.telemetry = telemetry;
         telemetry.update();
 
     }
