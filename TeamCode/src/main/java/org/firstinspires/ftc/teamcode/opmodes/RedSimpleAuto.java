@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.commands.ElevatorPosCommand;
 import org.firstinspires.ftc.teamcode.commands.EncoderDriveCommand;
+import org.firstinspires.ftc.teamcode.commands.TurnToHeadingCommand;
 import org.firstinspires.ftc.teamcode.commands.UnInstantCommand;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
@@ -24,6 +25,7 @@ public class RedSimpleAuto extends CommandOpMode {
     private ImuSubsystem imuSubsystem;
     private ElevatorSubsystem elevatorSubsystem;
     private ClawSubsystem clawSubsystem;
+    private TurnToHeadingCommand turn;
     private ArmSubsystem armSubsystem;
 
     @Override
@@ -40,10 +42,11 @@ public class RedSimpleAuto extends CommandOpMode {
 
         EncoderDriveCommand backUp2 = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 29);
 
-        EncoderDriveCommand strafeToCanvas = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, .35, 44);
+        EncoderDriveCommand driveToCanvas = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 44);
+        turn = new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, -90);
 
         Command openclaw = new UnInstantCommand(()-> clawSubsystem.open());
         Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.DROP_PIXEL, telemetry);
-        schedule(new SequentialCommandGroup(closeclaw, new WaitCommand(800), driveforward, openclaw, new WaitCommand(750), upounopixelo, closeclaw, new WaitCommand(400), backUp1, strafeToCanvas, openclaw, new WaitCommand(400), backUp2));
+        schedule(new SequentialCommandGroup(closeclaw, new WaitCommand(800), driveforward, openclaw, new WaitCommand(750), upounopixelo, closeclaw, new WaitCommand(400), backUp1, turn,  driveToCanvas, openclaw));
     }
 }
