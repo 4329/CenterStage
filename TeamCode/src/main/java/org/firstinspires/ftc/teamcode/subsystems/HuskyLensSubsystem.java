@@ -31,7 +31,7 @@ public class HuskyLensSubsystem extends SubsystemBase {
         for (int i = 0; i < blocks.length; i++) {
             telemetry.addData("Block", blocks[i].toString());
         }
-        if (blocks.length < 0) {
+        if (blocks.length > 0) {
             lastBlock = blocks[0];
             return blocks[0];
         } else {
@@ -52,4 +52,6 @@ public class HuskyLensSubsystem extends SubsystemBase {
             return PixelPosition.CENTER;
         }
     }
+
+
 }

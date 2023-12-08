@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.commands.CommandGroups;
 import org.firstinspires.ftc.teamcode.commands.ElevatorVerticalCommand;
 import org.firstinspires.ftc.teamcode.commands.HuskylensDetectCommand;
 import org.firstinspires.ftc.teamcode.commands.MecanumDriveCommand;
+import org.firstinspires.ftc.teamcode.commands.PixelPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.TurnToHeadingCommand;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
@@ -26,7 +27,8 @@ public class MatchTeleop extends CommandOpMode {
 
     private GamepadEx driver, operator;
     private ElevatorSubsystem elevatorSubsystem;
-    private MecanumDriveSubsystem mecanumDriveSubsystem;
+    private MecanumDriveSubsystem mecanumDriveSubsystem
+            ;
      private TelemetryUpdateSubsystem telemetryUpdateSubsystem;
     private ImuSubsystem imuSubsystem;
     private ClawSubsystem clawSubsystem;
@@ -48,6 +50,7 @@ public class MatchTeleop extends CommandOpMode {
         totalZeroCommandGroup = CommandGroups.totalZero(armSubsystem, clawSubsystem, elevatorSubsystem, telemetry);
         droneSubsystem = new DroneSubsystem(hardwareMap, telemetry);
         huskyLensSubsystem = new HuskyLensSubsystem(hardwareMap, telemetry);
+        PixelPositionCommand pixelPositionCommand = new PixelPositionCommand(huskyLensSubsystem, telemetry);
         MecanumDriveCommand driveMecanumCommand = new MecanumDriveCommand(mecanumDriveSubsystem,
                 () -> -driver.getLeftY(),
                 () -> driver.getRightX(),
@@ -66,7 +69,9 @@ public class MatchTeleop extends CommandOpMode {
         operator.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(()-> elevatorSubsystem.levelDown());
         operator.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(totalZeroCommandGroup);
         operator.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(()-> droneSubsystem.launch());
-        operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(()-> clawSubsystem.onePixel());
+//        operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(()-> clawSubsystem.onePixel());
+        operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(new PixelPositionCommand(huskyLensSubsystem, telemetry));
+
         operator.getGamepadButton(GamepadKeys.Button.X).whenPressed(new HuskylensDetectCommand(huskyLensSubsystem));
 
 
