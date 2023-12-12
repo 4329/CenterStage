@@ -5,10 +5,9 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
+import org.firstinspires.ftc.teamcode.commands.CommandGroups;
 import org.firstinspires.ftc.teamcode.commands.ElevatorVerticalCommand;
 import org.firstinspires.ftc.teamcode.commands.MecanumDriveCommand;
-import org.firstinspires.ftc.teamcode.commands.TotalZeroCommandGroup;
 import org.firstinspires.ftc.teamcode.commands.TurnToHeadingCommand;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
@@ -43,7 +42,7 @@ public class MatchTeleop extends CommandOpMode {
         elevatorSubsystem = new ElevatorSubsystem(hardwareMap, telemetry);
         clawSubsystem = new ClawSubsystem(hardwareMap, telemetry);
         armSubsystem = new ArmSubsystem(hardwareMap, telemetry);
-        totalZeroCommandGroup = TotalZeroCommandGroup.totalZero(armSubsystem, clawSubsystem, elevatorSubsystem, telemetry);
+        totalZeroCommandGroup = CommandGroups.totalZero(armSubsystem, clawSubsystem, elevatorSubsystem, telemetry);
         droneSubsystem = new DroneSubsystem(hardwareMap, telemetry);
         MecanumDriveCommand driveMecanumCommand = new MecanumDriveCommand(mecanumDriveSubsystem,
                 () -> -driver.getLeftY(),
@@ -65,8 +64,9 @@ public class MatchTeleop extends CommandOpMode {
         operator.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(()-> droneSubsystem.launch());
         operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(()-> clawSubsystem.onePixel());
 
-        schedule(driveMecanumCommand, elevatorVerticalCommand);
 
+        mecanumDriveSubsystem.setDefaultCommand(driveMecanumCommand);
+        elevatorSubsystem.setDefaultCommand(elevatorVerticalCommand);
 
     }
 }
