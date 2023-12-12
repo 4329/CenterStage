@@ -7,12 +7,15 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.commands.CommandGroups;
 import org.firstinspires.ftc.teamcode.commands.ElevatorVerticalCommand;
+import org.firstinspires.ftc.teamcode.commands.HuskylensDetectCommand;
 import org.firstinspires.ftc.teamcode.commands.MecanumDriveCommand;
+import org.firstinspires.ftc.teamcode.commands.PixelPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.TurnToHeadingCommand;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DroneSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ElevatorSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.HuskyLensSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.TelemetryUpdateSubsystem;
@@ -24,13 +27,15 @@ public class MatchTeleop extends CommandOpMode {
 
     private GamepadEx driver, operator;
     private ElevatorSubsystem elevatorSubsystem;
-    private MecanumDriveSubsystem mecanumDriveSubsystem;
+    private MecanumDriveSubsystem mecanumDriveSubsystem
+            ;
      private TelemetryUpdateSubsystem telemetryUpdateSubsystem;
     private ImuSubsystem imuSubsystem;
     private ClawSubsystem clawSubsystem;
     private ArmSubsystem armSubsystem;
     private Command totalZeroCommandGroup;
     private DroneSubsystem droneSubsystem;
+    private HuskyLensSubsystem huskyLensSubsystem;
 
     @Override
     public void initialize() {
@@ -44,6 +49,8 @@ public class MatchTeleop extends CommandOpMode {
         armSubsystem = new ArmSubsystem(hardwareMap, telemetry);
         totalZeroCommandGroup = CommandGroups.totalZero(armSubsystem, clawSubsystem, elevatorSubsystem, telemetry);
         droneSubsystem = new DroneSubsystem(hardwareMap, telemetry);
+        huskyLensSubsystem = new HuskyLensSubsystem(hardwareMap, telemetry);
+        PixelPositionCommand pixelPositionCommand = new PixelPositionCommand(huskyLensSubsystem, telemetry);
         MecanumDriveCommand driveMecanumCommand = new MecanumDriveCommand(mecanumDriveSubsystem,
                 () -> -driver.getLeftY(),
                 () -> driver.getRightX(),
@@ -55,14 +62,17 @@ public class MatchTeleop extends CommandOpMode {
                 () -> operator.getLeftY(),
 
         telemetry);
-        operator.getGamepadButton(GamepadKeys.Button.X).whenPressed(()-> clawSubsystem.toggleClaw());
+       // operator.getGamepadButton(GamepadKeys.Button.).whenPressed(()-> clawSubsystem.toggleClaw());
         operator.getGamepadButton(GamepadKeys.Button.Y).whenPressed(()-> armSubsystem.goToPosition(ArmPosition.OUT));
         operator.getGamepadButton(GamepadKeys.Button.A).whenPressed(()-> armSubsystem.goToPosition(ArmPosition.IN));
         operator.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(()-> elevatorSubsystem.levelUp());
         operator.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(()-> elevatorSubsystem.levelDown());
         operator.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(totalZeroCommandGroup);
         operator.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(()-> droneSubsystem.launch());
-        operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(()-> clawSubsystem.onePixel());
+//        operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(()-> clawSubsystem.onePixel());
+        operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(new PixelPositionCommand(huskyLensSubsystem, telemetry));
+
+        operator.getGamepadButton(GamepadKeys.Button.X).whenPressed(new HuskylensDetectCommand(huskyLensSubsystem));
 
 
         mecanumDriveSubsystem.setDefaultCommand(driveMecanumCommand);
