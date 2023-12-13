@@ -8,11 +8,13 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.commands.CommandGroups;
 import org.firstinspires.ftc.teamcode.commands.EncoderDriveCommand;
+import org.firstinspires.ftc.teamcode.commands.HuskylensDetectCommand;
 import org.firstinspires.ftc.teamcode.commands.TurnToHeadingCommand;
 import org.firstinspires.ftc.teamcode.commands.UnInstantCommand;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ElevatorSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.HuskyLensSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.TelemetryUpdateSubsystem;
@@ -28,6 +30,7 @@ public class RedAuto extends CommandOpMode {
     private ClawSubsystem clawSubsystem;
     private ArmSubsystem armSubsystem;
     private TurnToHeadingCommand turnToHeadingCommand;
+    private HuskyLensSubsystem huskyLensSubsystem;
 
 
     @Override
@@ -42,12 +45,13 @@ public class RedAuto extends CommandOpMode {
         clawSubsystem = new ClawSubsystem(hardwareMap, telemetry);
         armSubsystem = new ArmSubsystem(hardwareMap, telemetry);
         Command closeclaw = new UnInstantCommand(()-> clawSubsystem.close());
+        Command see = new HuskylensDetectCommand(huskyLensSubsystem, telemetry);
 
-        Command dropOffFirstPixel = CommandGroups.dropOffFirstPixel(() -> PixelPosition.LEFT, Alliance.RED, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry,  imuSubsystem);
+
+        Command dropOffFirstPixel = CommandGroups.dropOffFirstPixel(huskyLensSubsystem, Alliance.RED, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry,  imuSubsystem);
         EncoderDriveCommand driveToStart = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 6);
 
 
-        schedule(new SequentialCommandGroup(closeclaw, new WaitCommand(800), driveToStart,  new WaitCommand(800), dropOffFirstPixel));
-    }
+        schedule(new SequentialCommandGroup(closeclaw, see, new WaitCommand(1000), dropOffFirstPixel));    }
 
 }

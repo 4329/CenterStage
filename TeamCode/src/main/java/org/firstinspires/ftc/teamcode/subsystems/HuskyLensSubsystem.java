@@ -42,10 +42,13 @@ public class HuskyLensSubsystem extends SubsystemBase {
     }
 
     public PixelPosition getPixelPosition() {
+
+        this.telemetry = telemetry;
         if (lastBlock == null) {
             return PixelPosition.UNKNOWN;
         } else if (lastBlock.x < 80) {
             return PixelPosition.LEFT;
+
         } else if (lastBlock.x > 240) {
             return PixelPosition.RIGHT;
         } else {
