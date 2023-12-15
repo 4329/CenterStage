@@ -20,8 +20,9 @@ public class ElevatorSubsystem extends SubsystemBase {
         elevatorMotor.setDistancePerPulse(DISTANCEPERPULSE);
         this.elevatorMotor.setInverted(true);
         this.elevatorMotor.setRunMode(Motor.RunMode.PositionControl);
-        this.elevatorMotor.setPositionCoefficient(0.5);
-        this.elevatorMotor.setPositionTolerance(3.14159265358979);
+        this.elevatorMotor.setPositionCoefficient(1);
+        this.elevatorMotor.setFeedforwardCoefficients(0,0.35);
+        this.elevatorMotor.setPositionTolerance(0.5);
         this.elevatorMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         this.setPoint = 0;
         this.elevatorMotor.encoder.reset();
@@ -34,6 +35,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         this.elevatorMotor.setTargetPosition(this.setPoint);
 
         telemetry.addLine("Elevator setPoint:" + setPoint);
+        telemetry.addLine("Eleveator is at:" + elevatorMotor.getCurrentPosition());
 
 
     }
@@ -55,7 +57,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
 //        setPoint += (stickValue * 5.0);
 
-        int newSetPoint = (int) (setPoint + (stickValue * 20.0));
+        int newSetPoint = (int) (setPoint + (stickValue * 37.0));
 
         if (newSetPoint < 0) {
 
