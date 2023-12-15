@@ -47,7 +47,7 @@ public class BlueSimpleAuto extends CommandOpMode {
 
         EncoderDriveCommand driveToCanvas = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 37);
         turn = new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, 90);
-        EncoderDriveCommand strafeRight = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35, 20.5);
+        EncoderDriveCommand strafeRight = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35, 28.5);
 
         Command openclaw = new UnInstantCommand(()-> clawSubsystem.open());
         Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.DROP_PIXEL, telemetry);
