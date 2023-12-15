@@ -41,11 +41,8 @@ public class StupidAuto extends CommandOpMode {
         clawSubsystem = new ClawSubsystem(hardwareMap, telemetry);
         armSubsystem = new ArmSubsystem(hardwareMap, telemetry);
         turnToHeadingCommand = new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, 90);
-        Command closeclaw = new UnInstantCommand(()-> clawSubsystem.close());
-        EncoderDriveCommand driveforward = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 27.5);
 
 
-
-        schedule(new SequentialCommandGroup(driveforward, turnToHeadingCommand));
+        schedule(new SequentialCommandGroup());
     }
 }

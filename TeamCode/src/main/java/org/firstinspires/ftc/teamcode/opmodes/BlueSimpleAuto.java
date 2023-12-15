@@ -42,16 +42,16 @@ public class BlueSimpleAuto extends CommandOpMode {
         armSubsystem = new ArmSubsystem(hardwareMap, telemetry);
 
         Command closeclaw = new UnInstantCommand(()-> clawSubsystem.close());
-        EncoderDriveCommand driveforward = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 27.5);
+        EncoderDriveCommand driveforward = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 28.5);
         EncoderDriveCommand backUp1 = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 6);
 
         EncoderDriveCommand backUp2 = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 29);
 
-        EncoderDriveCommand driveToCanvas = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 41);
+        EncoderDriveCommand driveToCanvas = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 37);
         turn = new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, 90);
 
         Command openclaw = new UnInstantCommand(()-> clawSubsystem.open());
         Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.DROP_PIXEL, telemetry);
-        schedule(new SequentialCommandGroup(closeclaw, new WaitCommand(800), driveforward, openclaw, new WaitCommand(750), upounopixelo, closeclaw, new WaitCommand(400), backUp1, turn, driveToCanvas, openclaw));
+        schedule(new SequentialCommandGroup(closeclaw, new WaitCommand(800), driveforward, openclaw, new WaitCommand(750), upounopixelo, closeclaw, new WaitCommand(600), backUp1, turn, driveToCanvas, openclaw));
     }
 }
