@@ -54,6 +54,7 @@ public class MatchTeleop extends CommandOpMode {
                 () -> driver.getRightX(),
                 () -> driver.getLeftX(),
                 () -> driver.getButton(GamepadKeys.Button.B),
+                () -> driver.getButton(GamepadKeys.Button.A),
                 telemetry);
         driver.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whileHeld(new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, 90));
         ElevatorVerticalCommand elevatorVerticalCommand = new ElevatorVerticalCommand(elevatorSubsystem,
