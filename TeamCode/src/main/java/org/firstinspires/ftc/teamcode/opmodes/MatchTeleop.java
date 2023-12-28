@@ -21,6 +21,7 @@ import org.firstinspires.ftc.teamcode.subsystems.HuskyLensSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.TelemetryUpdateSubsystem;
+import org.firstinspires.ftc.teamcode.util.Alliance;
 import org.firstinspires.ftc.teamcode.util.ArmPosition;
 
 @TeleOp(name = "Match Teleop", group = "1")
@@ -76,11 +77,13 @@ public class MatchTeleop extends CommandOpMode {
         operator.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(()-> elevatorSubsystem.levelDown());
         operator.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(totalZeroCommandGroup);
         operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(()-> clawSubsystem.onePixel());
-        operator.getGamepadButton(GamepadKeys.Button.BACK).whenPressed(new ElevatorResetCommand(elevatorSubsystem, telemetry));
+//        operator.getGamepadButton(GamepadKeys.Button.BACK).whenPressed(new ElevatorResetCommand(elevatorSubsystem, telemetry));
 
 
 
-//        operator.getGamepadButton(GamepadKeys.Button.X).whileHeld(new HuskylensDetectCommand(huskyLensSubsystem, telemetry));
+        operator.getGamepadButton(GamepadKeys.Button.START).whileHeld(new HuskylensDetectCommand(huskyLensSubsystem, telemetry, Alliance.RED));
+        operator.getGamepadButton(GamepadKeys.Button.BACK).whileHeld(new HuskylensDetectCommand(huskyLensSubsystem, telemetry, Alliance.BLUE));
+
 
         mecanumDriveSubsystem.setDefaultCommand(driveMecanumCommand);
         elevatorSubsystem.setDefaultCommand(elevatorVerticalCommand);

@@ -46,7 +46,7 @@ public class RedAuto extends CommandOpMode {
         clawSubsystem = new ClawSubsystem(hardwareMap, telemetry);
         armSubsystem = new ArmSubsystem(hardwareMap, telemetry);
         Command closeclaw = new UnInstantCommand(()-> clawSubsystem.close());
-        Command see = new HuskylensDetectCommand(huskyLensSubsystem, telemetry);
+        Command see = new HuskylensDetectCommand(huskyLensSubsystem, telemetry, Alliance.RED);
         Command reset = new ElevatorResetCommand(elevatorSubsystem, telemetry);
 
         Command dropOffFirstPixel = CommandGroups.dropOffFirstPixel(huskyLensSubsystem, Alliance.RED, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry,  imuSubsystem);
