@@ -33,11 +33,10 @@ public class CommandGroups {
 
     @NonNull
     @Contract("_, _, _, _ -> new")
-    public static Command totalZero(ArmSubsystem armSubsystem, ClawSubsystem clawSubsystem, ElevatorSubsystem elevatorSubsystem, Telemetry telemetry) {
+    public static Command totalZero(ArmSubsystem armSubsystem, ElevatorSubsystem elevatorSubsystem, Telemetry telemetry) {
 
         return new ParallelCommandGroup(
                 new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.DOWN, telemetry),
-                new UnInstantCommand(() -> clawSubsystem.open()),
                 new ArmPositionCommand(armSubsystem, ArmPosition.IN));
 
 
