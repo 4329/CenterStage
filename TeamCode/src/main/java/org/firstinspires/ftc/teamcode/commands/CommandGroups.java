@@ -55,7 +55,7 @@ public class CommandGroups {
         Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.DROP_PIXEL, telemetry);
 
 
-        if (huskyLensSubsystem.getPixelPosition() == PixelPosition.LEFT || (alliance == Alliance.RED && huskyLensSubsystem.getPixelPosition() == PixelPosition.RIGHT)) {
+        if (alliance == Alliance.BLUE && huskyLensSubsystem.getPixelPosition() == PixelPosition.LEFT || (alliance == Alliance.RED && huskyLensSubsystem.getPixelPosition() == PixelPosition.RIGHT)) {
 
 
             EncoderDriveCommand drive1 = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 1.5);
@@ -77,7 +77,7 @@ public class CommandGroups {
 
             );
 
-        } else if (huskyLensSubsystem.getPixelPosition() == PixelPosition.RIGHT ||  (alliance == Alliance.RED && huskyLensSubsystem.getPixelPosition() == PixelPosition.LEFT)) {
+        } else if (alliance == Alliance.BLUE && huskyLensSubsystem.getPixelPosition() == PixelPosition.RIGHT ||  (alliance == Alliance.RED && huskyLensSubsystem.getPixelPosition() == PixelPosition.LEFT)) {
 
             EncoderDriveCommand strafeLeftToRightPixel = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35  * allienceDirection, 20.5);
             EncoderDriveCommand driveforward = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 7);
