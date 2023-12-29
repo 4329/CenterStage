@@ -43,7 +43,7 @@ public class ClawSubsystem extends SubsystemBase {
     }
 
     public void onePixel() {
-        servo.setPosition(0.2875);
+        servo.setPosition(0.30);
 
         telemetry.addLine("");
 

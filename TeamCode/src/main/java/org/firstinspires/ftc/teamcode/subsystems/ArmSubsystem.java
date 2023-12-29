@@ -18,7 +18,7 @@ public class ArmSubsystem extends SubsystemBase {
         this.telemetry = jerry;
         this.armMotor.setRunMode(Motor.RunMode.PositionControl);
         this.armMotor.setPositionCoefficient(0.15);
-        this.armMotor.setPositionTolerance(1);
+        this.armMotor.setPositionTolerance(0.5);
         this.armMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         this.setPoint = 0;
         this.armMotor.encoder.reset();
