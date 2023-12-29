@@ -22,7 +22,6 @@ public class ElevatorVerticalCommand extends CommandBase {
 
     @Override
     public void execute() {
-        telemetry.addLine("Elevator hath runneth!");
         elevatorSubsystem.move(elevatorPower.getAsDouble());
     }
 

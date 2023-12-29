@@ -69,20 +69,23 @@ public class MatchTeleop extends CommandOpMode {
         driver.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whileHeld(new MecanumDpadCommand(mecanumDriveSubsystem,() -> driver.getButton(GamepadKeys.Button.B),0, -1, telemetry));
         ElevatorVerticalCommand elevatorVerticalCommand = new ElevatorVerticalCommand(elevatorSubsystem,
                 () -> operator.getLeftY(),
+
         telemetry);
         operator.getGamepadButton(GamepadKeys.Button.X).whenPressed(()-> clawSubsystem.toggleClaw());
         operator.getGamepadButton(GamepadKeys.Button.Y).whenPressed(()-> armSubsystem.goToPosition(ArmPosition.OUT));
         operator.getGamepadButton(GamepadKeys.Button.A).whenPressed(()-> armSubsystem.goToPosition(ArmPosition.IN));
+        operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(()-> clawSubsystem.onePixel());
+
         operator.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(()-> elevatorSubsystem.levelUp());
         operator.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(()-> elevatorSubsystem.levelDown());
         operator.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(totalZeroCommandGroup);
         operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(()-> clawSubsystem.onePixel());
-//        operator.getGamepadButton(GamepadKeys.Button.BACK).whenPressed(new ElevatorResetCommand(elevatorSubsystem, telemetry));
+        operator.getGamepadButton(GamepadKeys.Button.BACK).whenPressed(new ElevatorResetCommand(elevatorSubsystem, telemetry));
 
 
 
-        operator.getGamepadButton(GamepadKeys.Button.START).whileHeld(new HuskylensDetectCommand(huskyLensSubsystem, telemetry, Alliance.RED));
-        operator.getGamepadButton(GamepadKeys.Button.BACK).whileHeld(new HuskylensDetectCommand(huskyLensSubsystem, telemetry, Alliance.BLUE));
+        //operator.getGamepadButton(GamepadKeys.Button.START).whileHeld(new HuskylensDetectCommand(huskyLensSubsystem, telemetry, Alliance.RED));
+        //operator.getGamepadButton(GamepadKeys.Button.BACK).whileHeld(new HuskylensDetectCommand(huskyLensSubsystem, telemetry, Alliance.BLUE));
 
 
         mecanumDriveSubsystem.setDefaultCommand(driveMecanumCommand);

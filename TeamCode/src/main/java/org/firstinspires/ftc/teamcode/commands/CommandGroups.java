@@ -52,7 +52,7 @@ public class CommandGroups {
 
         Command openclaw = new UnInstantCommand(()-> clawSubsystem.open());
         Command closeclaw = new UnInstantCommand(()-> clawSubsystem.close());
-        Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.DROP_PIXEL, telemetry);
+        Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.PICKONEPPIXEL, telemetry);
 
 
         if (alliance == Alliance.BLUE && huskyLensSubsystem.getPixelPosition() == PixelPosition.LEFT || (alliance == Alliance.RED && huskyLensSubsystem.getPixelPosition() == PixelPosition.RIGHT)) {

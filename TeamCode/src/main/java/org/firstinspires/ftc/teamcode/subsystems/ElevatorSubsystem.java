@@ -30,8 +30,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         this.elevatorMotor.setTargetPosition(this.setPoint);
 
-        telemetry.addLine("Elevator setPoint:" + setPoint);
-        telemetry.addLine("Eleveator is at:" + elevatorMotor.getCurrentPosition());
+
 
 
     }
@@ -47,6 +46,9 @@ public class ElevatorSubsystem extends SubsystemBase {
            this.elevatorMotor.set(0.5);
 
         }
+
+        telemetry.addLine("Elevator setPoint:" + setPoint);
+        telemetry.addLine("Eleveator is at:" + elevatorMotor.getCurrentPosition());
 
     }
 
@@ -73,8 +75,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         setPoint = newSetPoint;
 
         this.elevatorMotor.setTargetPosition(setPoint);
-
-        telemetry.addLine("Elevator setPoint:" + setPoint);
 
     }
 
