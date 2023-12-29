@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.commands.CommandGroups;
 import org.firstinspires.ftc.teamcode.commands.ElevatorResetCommand;
 import org.firstinspires.ftc.teamcode.commands.ElevatorVerticalCommand;
+import org.firstinspires.ftc.teamcode.commands.FireZeMisslizCommand;
 import org.firstinspires.ftc.teamcode.commands.HuskylensDetectCommand;
 import org.firstinspires.ftc.teamcode.commands.MecanumDriveCommand;
 import org.firstinspires.ftc.teamcode.commands.TurnToHeadingCommand;
@@ -50,6 +51,9 @@ public class MatchTeleop extends CommandOpMode {
         totalZeroCommandGroup = CommandGroups.totalZero(armSubsystem, elevatorSubsystem, telemetry);
         droneSubsystem = new DroneSubsystem(hardwareMap, telemetry);
         huskyLensSubsystem = new HuskyLensSubsystem(hardwareMap, telemetry);
+        FireZeMisslizCommand firedemisillestoaliens = new FireZeMisslizCommand(droneSubsystem,
+                () -> driver.getButton(GamepadKeys.Button.RIGHT_BUMPER),
+                () -> operator.getButton(GamepadKeys.Button.RIGHT_BUMPER));
         MecanumDriveCommand driveMecanumCommand = new MecanumDriveCommand(mecanumDriveSubsystem,
                 () -> -driver.getLeftY(),
                 () -> driver.getRightX(),
@@ -68,7 +72,6 @@ public class MatchTeleop extends CommandOpMode {
         operator.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(()-> elevatorSubsystem.levelUp());
         operator.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(()-> elevatorSubsystem.levelDown());
         operator.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(totalZeroCommandGroup);
-        operator.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(()-> droneSubsystem.launch());
         operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(()-> clawSubsystem.onePixel());
         operator.getGamepadButton(GamepadKeys.Button.BACK).whenPressed(new ElevatorResetCommand(elevatorSubsystem, telemetry));
 
@@ -78,6 +81,7 @@ public class MatchTeleop extends CommandOpMode {
 
         mecanumDriveSubsystem.setDefaultCommand(driveMecanumCommand);
         elevatorSubsystem.setDefaultCommand(elevatorVerticalCommand);
+        droneSubsystem.setDefaultCommand(firedemisillestoaliens);
         schedule(new ElevatorResetCommand(elevatorSubsystem, telemetry));
     }
 }
