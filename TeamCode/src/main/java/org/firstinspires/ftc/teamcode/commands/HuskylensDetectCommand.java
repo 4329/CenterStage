@@ -21,14 +21,11 @@ public class HuskylensDetectCommand extends CommandBase {
     @Override
     public void execute() {
         lastBlock = huskyLensSubsystem.detectBlocks();
-        telemetry.addLine("pixelPosition is" + huskyLensSubsystem.getPixelPosition());
-
+        telemetry.addLine("pixelPosition is" + huskyLensSubsystem.getTargetPosition());
     }
 
     @Override
     public boolean isFinished() {
-        return lastBlock != null;
+        return false;
     }
-
-
 }

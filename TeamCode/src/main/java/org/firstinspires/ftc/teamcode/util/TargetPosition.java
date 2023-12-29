@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.util;
 
-public enum PixelPosition {
+public enum TargetPosition {
 
     LEFT, RIGHT, CENTER, UNKNOWN;
 

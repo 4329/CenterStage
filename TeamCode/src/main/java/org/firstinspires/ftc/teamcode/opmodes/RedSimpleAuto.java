@@ -49,6 +49,11 @@ public class RedSimpleAuto extends CommandOpMode {
 
         Command openclaw = new UnInstantCommand(()-> clawSubsystem.open());
         Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.DROP_PIXEL, telemetry);
-        schedule(new SequentialCommandGroup(closeclaw, new WaitCommand(800), driveforward, new WaitCommand(250), openclaw, new WaitCommand(650), upounopixelo, new WaitCommand(200), closeclaw, new WaitCommand(400), backUp1, turn, strafeLeft, driveToCanvas, openclaw));
+        Command eleHome = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.DOWN, telemetry);
+        schedule(new SequentialCommandGroup(closeclaw, new WaitCommand(800),
+                driveforward, new WaitCommand(250), openclaw, new WaitCommand(650),
+                upounopixelo, new WaitCommand(200), closeclaw, new WaitCommand(400),
+                backUp1, turn, strafeLeft, driveToCanvas, openclaw, new WaitCommand(400),
+                eleHome));
     }
 }

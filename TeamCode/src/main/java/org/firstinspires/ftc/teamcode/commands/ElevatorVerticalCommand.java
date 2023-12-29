@@ -5,6 +5,7 @@ import com.arcrobotics.ftclib.command.CommandBase;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystems.ElevatorSubsystem;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 public class ElevatorVerticalCommand extends CommandBase {
@@ -12,18 +13,22 @@ public class ElevatorVerticalCommand extends CommandBase {
     private ElevatorSubsystem es;
     private  Telemetry telemetry;
     private DoubleSupplier elevatorPower;
-    public ElevatorVerticalCommand(ElevatorSubsystem elevatorSubsystem, DoubleSupplier elevatorPower, Telemetry telemetry) {
+    private BooleanSupplier reset;
+    public ElevatorVerticalCommand(ElevatorSubsystem elevatorSubsystem, DoubleSupplier elevatorPower,
+                                   BooleanSupplier reset,
+                                   Telemetry telemetry) {
 
         this.elevatorPower = elevatorPower;
         this.elevatorSubsystem = elevatorSubsystem;
         this.telemetry = telemetry;
+        this.reset = reset;
         addRequirements(elevatorSubsystem);
     }
 
     @Override
     public void execute() {
         telemetry.addLine("Elevator hath runneth!");
-        elevatorSubsystem.move(elevatorPower.getAsDouble());
+        elevatorSubsystem.move(elevatorPower.getAsDouble(), reset.getAsBoolean());
     }
 
 

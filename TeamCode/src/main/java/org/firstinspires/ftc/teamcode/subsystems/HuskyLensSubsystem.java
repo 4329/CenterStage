@@ -1,13 +1,15 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.util.PixelPosition;
+import org.firstinspires.ftc.teamcode.util.TargetPosition;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class HuskyLensSubsystem extends SubsystemBase {
 
@@ -16,45 +18,40 @@ public class HuskyLensSubsystem extends SubsystemBase {
     private Telemetry telemetry;
     private HuskyLens.Block lastBlock;
 
+    private final int leftTarget = 80;
+    private final int rightTarget = 240;
+
     public HuskyLensSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
-
         huskyLens = hardwareMap.get(HuskyLens.class, "huskyLens");
-        huskyLens.selectAlgorithm(HuskyLens.Algorithm.OBJECT_TRACKING);
+        huskyLens.selectAlgorithm(HuskyLens.Algorithm.COLOR_RECOGNITION);
         this.telemetry = telemetry;
-        telemetry.update();
-
+        // telemetry.update();
     }
 
     public HuskyLens.Block detectBlocks() {
-        HuskyLens.Block[] blocks = huskyLens.blocks();
-        telemetry.addData("Block count", blocks.length);
-        for (int i = 0; i < blocks.length; i++) {
-            telemetry.addData("Block", blocks[i].toString());
+        List<HuskyLens.Block> blocks = Arrays.asList(huskyLens.blocks());
+        telemetry.addData("Block count", blocks.size());
+        for (int i = 0; i < blocks.size(); i++) {
+            telemetry.addData("Block", blocks.get(i).toString());
         }
-        if (blocks.length > 0) {
-            lastBlock = blocks[0];
-            return blocks[0];
+        if (blocks.size() > 0) {
+            lastBlock = blocks.get(0);
+            return blocks.get(0);
         } else {
             lastBlock = null;
             return null;
-
         }
     }
 
-    public PixelPosition getPixelPosition() {
-
-        this.telemetry = telemetry;
+    public TargetPosition getTargetPosition() {
         if (lastBlock == null) {
-            return PixelPosition.UNKNOWN;
-        } else if (lastBlock.x < 80) {
-            return PixelPosition.LEFT;
-
-        } else if (lastBlock.x > 240) {
-            return PixelPosition.RIGHT;
+            return TargetPosition.UNKNOWN;
+        } else if (lastBlock.x < leftTarget) {
+            return TargetPosition.LEFT;
+        } else if (lastBlock.x > rightTarget) {
+            return TargetPosition.RIGHT;
         } else {
-            return PixelPosition.CENTER;
+            return TargetPosition.CENTER;
         }
     }
-
-
 }

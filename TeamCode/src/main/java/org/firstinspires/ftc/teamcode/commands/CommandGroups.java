@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.commands;
 
 
-import android.provider.ContactsContract;
-
 import androidx.annotation.NonNull;
 
 import com.arcrobotics.ftclib.command.Command;
@@ -10,7 +8,6 @@ import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
-import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
@@ -21,13 +18,8 @@ import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.util.Alliance;
 import org.firstinspires.ftc.teamcode.util.ArmPosition;
 import org.firstinspires.ftc.teamcode.util.ElevatorPosition;
-import org.firstinspires.ftc.teamcode.util.PixelPosition;
+import org.firstinspires.ftc.teamcode.util.TargetPosition;
 import org.jetbrains.annotations.Contract;
-
-import java.util.Base64;
-import java.util.function.Supplier;
-
-import javax.crypto.ExemptionMechanism;
 
 public class CommandGroups {
 
@@ -56,7 +48,7 @@ public class CommandGroups {
         Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.DROP_PIXEL, telemetry);
 
 
-        if (huskyLensSubsystem.getPixelPosition() == PixelPosition.LEFT || (alliance == Alliance.RED && huskyLensSubsystem.getPixelPosition() == PixelPosition.RIGHT)) {
+        if (huskyLensSubsystem.getTargetPosition() == TargetPosition.LEFT || (alliance == Alliance.RED && huskyLensSubsystem.getTargetPosition() == TargetPosition.RIGHT)) {
 
 
             EncoderDriveCommand drive1 = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 1.5);
@@ -78,7 +70,7 @@ public class CommandGroups {
 
             );
 
-        } else if (huskyLensSubsystem.getPixelPosition() == PixelPosition.RIGHT ||  (alliance == Alliance.RED && huskyLensSubsystem.getPixelPosition() == PixelPosition.LEFT)) {
+        } else if (huskyLensSubsystem.getTargetPosition() == TargetPosition.RIGHT ||  (alliance == Alliance.RED && huskyLensSubsystem.getTargetPosition() == TargetPosition.LEFT)) {
 
             EncoderDriveCommand strafeLeftToRightPixel = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35  * allienceDirection, 20.5);
             EncoderDriveCommand driveforward = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 7);

@@ -53,13 +53,13 @@ public class ElevatorSubsystem extends SubsystemBase {
         this.elevatorMotor.stopMotor();
     }
 
-    public void move(double stickValue) {
+    public void move(double stickValue, boolean reset) {
 
 //        setPoint += (stickValue * 5.0);
 
         int newSetPoint = (int) (setPoint + (stickValue * 37.0));
 
-        if (newSetPoint < 0) {
+        if (newSetPoint < 0 && !reset) {
 
             newSetPoint = 0;
 
@@ -91,5 +91,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         return elevatorMotor.atTargetPosition();
 
+        }
+        public void reset(){
+            this.elevatorMotor.encoder.reset();
         }
 }
