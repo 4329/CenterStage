@@ -1,16 +1,13 @@
 package org.firstinspires.ftc.teamcode.commands;
 
-import static org.firstinspires.ftc.teamcode.commands.MecanumDriveCommand.SLOW_MOTION_DIVISOR;
-
 import com.arcrobotics.ftclib.command.CommandBase;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
 
 import java.util.function.BooleanSupplier;
-import java.util.function.DoubleSupplier;
 
-public class Mechaniamnuggets extends CommandBase {
+public class MecanumDpadCommand extends CommandBase {
     private MecanumDriveSubsystem mecanumDriveSubsystem;
     private BooleanSupplier speedBooost;
     private final int forward;
@@ -18,11 +15,11 @@ public class Mechaniamnuggets extends CommandBase {
     private Telemetry telemetry;
     private static double REGULAR_MOTION_DIVISOR = 3.0;
 
-    public Mechaniamnuggets(MecanumDriveSubsystem mecanumDriveSubsystem,
+    public MecanumDpadCommand(MecanumDriveSubsystem mecanumDriveSubsystem,
 
-                            BooleanSupplier speedBooost,
-                            int forward, int strafe,
-                            Telemetry telemetry) {
+                              BooleanSupplier speedBooost,
+                              int forward, int strafe,
+                              Telemetry telemetry) {
         this.mecanumDriveSubsystem = mecanumDriveSubsystem;
         this.speedBooost = speedBooost;
         this.forward = forward;
