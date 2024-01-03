@@ -13,12 +13,17 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.util.Alliance;
 import org.firstinspires.ftc.teamcode.util.PixelPosition;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HuskyLensSubsystem extends SubsystemBase {
 
     private HuskyLens huskyLens;
 
     private Telemetry telemetry;
     private HuskyLens.Block lastBlock;
+
+    private PixelPosition pixelPosition;
 
     public HuskyLensSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
 
@@ -29,7 +34,8 @@ public class HuskyLensSubsystem extends SubsystemBase {
 
     }
 
-    public HuskyLens.Block detectBlocks(Alliance alliance) {
+    public List<HuskyLens.Block> detectBlocks(Alliance alliance) {
+        List <HuskyLens.Block> blockList = new ArrayList<>();
         HuskyLens.Block[] blocks = huskyLens.blocks();
         telemetry.addData("Block count", blocks.length);
 
@@ -41,34 +47,26 @@ public class HuskyLensSubsystem extends SubsystemBase {
             for (int i = 0; i < blocks.length; i++) {
                 if (alliance == Alliance.BLUE && blocks[i].id == 1) {
                     lastBlock = blocks[i];
-                    return lastBlock;
+                    blockList.add(blocks[i]);
 
                 } else if (alliance == Alliance.RED && blocks[i].id == 2) {
 
                     lastBlock = blocks[i];
-                    return lastBlock;
+                    blockList.add(blocks[i]);
                 }
 
             }
 
         }
 
-        lastBlock = null;
-        return null;
-
+        return blockList;
     }
 
     public PixelPosition getPixelPosition() {
+        return pixelPosition;
+    }
 
-        this.telemetry = telemetry;
-        if (lastBlock == null) {
-            return PixelPosition.RIGHT;
-
-        } else if (lastBlock.x < 200) {
-            return PixelPosition.LEFT;
-
-        } else  {
-            return PixelPosition.CENTER;
-        }
+    public void setPixelPosition(PixelPosition pixelPosition) {
+        this.pixelPosition = pixelPosition;
     }
 }

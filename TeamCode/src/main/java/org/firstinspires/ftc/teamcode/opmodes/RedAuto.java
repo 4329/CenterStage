@@ -6,6 +6,7 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.commands.ArmPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.CommandGroups;
 import org.firstinspires.ftc.teamcode.commands.ElevatorResetCommand;
 import org.firstinspires.ftc.teamcode.commands.EncoderDriveCommand;
@@ -20,6 +21,7 @@ import org.firstinspires.ftc.teamcode.subsystems.ImuSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.TelemetryUpdateSubsystem;
 import org.firstinspires.ftc.teamcode.util.Alliance;
+import org.firstinspires.ftc.teamcode.util.ArmPosition;
 import org.firstinspires.ftc.teamcode.util.PixelPosition;
 
 @Autonomous(name = "FullRedAuto", group = "1")
@@ -48,11 +50,14 @@ public class RedAuto extends CommandOpMode {
         Command closeclaw = new UnInstantCommand(()-> clawSubsystem.close());
         Command see = new HuskylensDetectCommand(huskyLensSubsystem, telemetry, Alliance.RED);
         Command reset = new ElevatorResetCommand(elevatorSubsystem, telemetry);
+        Command raise = new ArmPositionCommand(armSubsystem, ArmPosition.OUT);
+        Command lower = new ArmPositionCommand(armSubsystem, ArmPosition.IN);
+
 
         Command dropOffFirstPixel = CommandGroups.dropOffFirstPixel(huskyLensSubsystem, Alliance.RED, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry,  imuSubsystem);
         EncoderDriveCommand driveToStart = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 6);
 
 
-        schedule(new SequentialCommandGroup(reset, closeclaw, see, new WaitCommand(1000), dropOffFirstPixel));    }
+        schedule(new SequentialCommandGroup(reset, closeclaw, raise, see.withTimeout(1000), lower, new WaitCommand(1000), dropOffFirstPixel));    }
 
 }
