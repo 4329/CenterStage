@@ -44,11 +44,11 @@ public class HuskylensDetectCommand extends CommandBase {
 
         Log.i("huskyBlocks", "count is" + count);
         for (HuskyLens.Block block : detectedBlocks) {
-            double blockRatio = block.height / block.width;
+            double blockRatio =  (double) block.height / (double) block.width;
             Log.i("huskyBlocks", "blockRatio" + blockRatio);
             Log.i("huskyBlocks", "block coordinates" + "(" + block.x + "," + block.y + ")");
 
-            if (blockRatio > 0.75 && blockRatio < 1.25) {
+            if (blockRatio > 0.95 && blockRatio < 1.05) {
 
                 detectedBlocks.add(block);
 
@@ -62,7 +62,7 @@ public class HuskylensDetectCommand extends CommandBase {
     @Override
     public boolean isFinished() {
 
-        if (count >= 10) {
+        if (count >= 15) {
 
             return true;
         } else {
