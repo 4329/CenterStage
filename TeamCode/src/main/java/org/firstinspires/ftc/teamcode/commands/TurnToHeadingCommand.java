@@ -23,7 +23,7 @@ public class TurnToHeadingCommand extends CommandBase {
         this.imu = imuSubsystem;
         this.telemetry = telemetry;
         this.DesiredAngle = DesiredAngle;
-        this.frcPid = new FrcPidController(0.037, 0, 0.000075);
+        this.frcPid = new FrcPidController(0.025, 0, 0.000075);
         addRequirements(mecanumDriveSubsystem);
     }
 

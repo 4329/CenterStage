@@ -28,6 +28,8 @@ import org.firstinspires.ftc.teamcode.util.ArmPosition;
 import org.firstinspires.ftc.teamcode.util.ElevatorPosition;
 import org.firstinspires.ftc.teamcode.util.PixelPosition;
 
+import java.nio.file.Watchable;
+
 @Autonomous(name = "FullBlueAuto", group = "1")
 public class BlueAuto extends CommandOpMode {
     private MecanumDriveSubsystem mecanumDriveSubsystem;
@@ -62,7 +64,7 @@ public class BlueAuto extends CommandOpMode {
         EncoderDriveCommand driveToStart = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 6);
 
 
-        schedule(new SequentialCommandGroup(reset, closeclaw, see.withTimeout(1000)));
+        schedule(new SequentialCommandGroup(reset, new WaitCommand(250), closeclaw, see.withTimeout(1000)));
     }
 
 }
