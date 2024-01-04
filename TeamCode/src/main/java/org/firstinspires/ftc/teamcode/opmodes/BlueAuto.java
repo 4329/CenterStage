@@ -53,17 +53,16 @@ public class BlueAuto extends CommandOpMode {
         clawSubsystem = new ClawSubsystem(hardwareMap, telemetry);
         armSubsystem = new ArmSubsystem(hardwareMap, telemetry);
         Command closeclaw = new UnInstantCommand(()-> clawSubsystem.close());
-        Command see = new HuskylensDetectCommand(huskyLensSubsystem, telemetry, Alliance.BLUE);
+        Command see = new HuskylensDetectCommand(huskyLensSubsystem,  telemetry, Alliance.BLUE,  mecanumDriveSubsystem,  clawSubsystem,  elevatorSubsystem,  imuSubsystem);
         Command reset = new ElevatorResetCommand(elevatorSubsystem, telemetry);
         Command raise = new ArmPositionCommand(armSubsystem, ArmPosition.OUT);
         Command lower = new ArmPositionCommand(armSubsystem, ArmPosition.IN);
 
 
-        Command dropOffFirstPixel = CommandGroups.dropOffFirstPixel(huskyLensSubsystem, Alliance.BLUE, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry,  imuSubsystem);
         EncoderDriveCommand driveToStart = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 6);
 
 
-        schedule(new SequentialCommandGroup(reset, closeclaw, raise, see.withTimeout(1000), lower, new WaitCommand(1000), dropOffFirstPixel));
+        schedule(new SequentialCommandGroup(reset, closeclaw, see.withTimeout(1000)));
     }
 
 }

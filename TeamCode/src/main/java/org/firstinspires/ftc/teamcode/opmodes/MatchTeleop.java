@@ -91,6 +91,9 @@ public class MatchTeleop extends CommandOpMode {
         mecanumDriveSubsystem.setDefaultCommand(driveMecanumCommand);
         elevatorSubsystem.setDefaultCommand(elevatorVerticalCommand);
         droneSubsystem.setDefaultCommand(firedemisillestoaliens);
+
+        register(imuSubsystem, telemetryUpdateSubsystem);
+
         schedule(new ElevatorResetCommand(elevatorSubsystem, telemetry));
     }
 }

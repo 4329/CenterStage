@@ -2,11 +2,17 @@ package org.firstinspires.ftc.teamcode.commands;
 
 import android.util.Log;
 
+import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandBase;
+import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.qualcomm.hardware.dfrobot.HuskyLens;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.ElevatorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.HuskyLensSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.ImuSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.util.Alliance;
 import org.firstinspires.ftc.teamcode.util.PixelPosition;
 
@@ -19,13 +25,22 @@ public class HuskylensDetectCommand extends CommandBase {
     private List<HuskyLens.Block> lastBlocks;
     private Telemetry telemetry;
     private Alliance alliance;
+    private MecanumDriveSubsystem mecanumDriveSubsystem;
+    private ClawSubsystem clawSubsystem;
+    private ElevatorSubsystem elevatorSubsystem;
+    private ImuSubsystem imuSubsystem;
     private int count;
     private double positionConfidence = 0.75;
 
-    public HuskylensDetectCommand(HuskyLensSubsystem huskyLensSubsystem, Telemetry telemetry, Alliance alliance) {
+    public HuskylensDetectCommand(HuskyLensSubsystem huskyLensSubsystem, Telemetry telemetry, Alliance alliance, MecanumDriveSubsystem mecanumDriveSubsystem, ClawSubsystem clawSubsystem, ElevatorSubsystem elevatorSubsystem, ImuSubsystem imuSubsystem) {
         this.huskyLensSubsystem = huskyLensSubsystem;
         this.telemetry = telemetry;
         this.alliance = alliance;
+
+        this.mecanumDriveSubsystem = mecanumDriveSubsystem;
+        this.clawSubsystem = clawSubsystem;
+        this.elevatorSubsystem = elevatorSubsystem;
+        this.imuSubsystem = imuSubsystem;
     }
 
     @Override
@@ -48,9 +63,9 @@ public class HuskylensDetectCommand extends CommandBase {
             Log.i("huskyBlocks", "blockRatio" + blockRatio);
             Log.i("huskyBlocks", "block coordinates" + "(" + block.x + "," + block.y + ")");
 
-            if (blockRatio > 0.95 && blockRatio < 1.05) {
+            if (blockRatio > 0.90 && blockRatio < 1.10) {
 
-                detectedBlocks.add(block);
+                lastBlocks.add(block);
 
             }
 
@@ -96,22 +111,31 @@ public class HuskylensDetectCommand extends CommandBase {
 
         right = count - left - center;
 
+        Log.i("huskyBlocks", "left, center, right " + left + "," + center + "," + right);
+
+        PixelPosition pixelPosition;
+
         if (left > right && left > center && left / (double) count > positionConfidence) {
 
-            huskyLensSubsystem.setPixelPosition(PixelPosition.LEFT);
+            pixelPosition = PixelPosition.LEFT;
 
         }
 
         else if (right > center && right > left && right / (double) count > positionConfidence) {
 
-            huskyLensSubsystem.setPixelPosition(PixelPosition.RIGHT);
+            pixelPosition = PixelPosition.RIGHT;
         }
 
         else {
 
-            huskyLensSubsystem.setPixelPosition(PixelPosition.CENTER);
+            pixelPosition = PixelPosition.CENTER;
         }
 
+        Command firstPixel = CommandGroups.dropOffFirstPixel(pixelPosition,  alliance,  mecanumDriveSubsystem,  clawSubsystem,  elevatorSubsystem,  telemetry,  imuSubsystem);
+
+        CommandScheduler.getInstance().schedule(firstPixel);
     }
+
+
 
 }

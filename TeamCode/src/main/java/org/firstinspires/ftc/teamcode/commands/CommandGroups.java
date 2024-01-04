@@ -2,12 +2,14 @@ package org.firstinspires.ftc.teamcode.commands;
 
 
 import android.provider.ContactsContract;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
+import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.checkerframework.checker.units.qual.A;
@@ -42,7 +44,7 @@ public class CommandGroups {
 
     }
 
-    public static Command dropOffFirstPixel(HuskyLensSubsystem huskyLensSubsystem, Alliance alliance, MecanumDriveSubsystem mecanumDriveSubsystem, ClawSubsystem clawSubsystem, ElevatorSubsystem elevatorSubsystem, Telemetry telemetry, ImuSubsystem imuSubsystem) {
+    public static Command dropOffFirstPixel(PixelPosition pixelPosition, Alliance alliance, MecanumDriveSubsystem mecanumDriveSubsystem, ClawSubsystem clawSubsystem, ElevatorSubsystem elevatorSubsystem, Telemetry telemetry, ImuSubsystem imuSubsystem) {
 
         double allienceDirection = Alliance.BLUE.equals(alliance) ? 1.0 : -1.0;
 
@@ -55,15 +57,26 @@ public class CommandGroups {
         Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.PICKONEPPIXEL, telemetry);
 
 
-        if (alliance == Alliance.BLUE && huskyLensSubsystem.getPixelPosition() == PixelPosition.LEFT || (alliance == Alliance.RED && huskyLensSubsystem.getPixelPosition() == PixelPosition.RIGHT)) {
+        if (alliance == Alliance.BLUE && pixelPosition == PixelPosition.LEFT || (alliance == Alliance.RED && pixelPosition == PixelPosition.RIGHT)) {
 
+            EncoderDriveCommand firstDrive = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 1.5);
 
             EncoderDriveCommand drive1 = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 1.5);
-            EncoderDriveCommand backUp1 = new EncoderDriveCommand(mecanumDriveSubsystem, 0.35, 0, 0, 3);
-            EncoderDriveCommand strafe = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35  * allienceDirection, 17);
-            EncoderDriveCommand strafeRightToLeftPixel = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, 0.35  * allienceDirection, 26);
+            EncoderDriveCommand drive2 = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 9);
+            EncoderDriveCommand drive3 = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 37);
 
-            return new SequentialCommandGroup(turnLeft,
+
+            EncoderDriveCommand backUp1 = new EncoderDriveCommand(mecanumDriveSubsystem, 0.35, 0, 0, 3);
+            EncoderDriveCommand backUp2 = new EncoderDriveCommand(mecanumDriveSubsystem, 0.35, 0, 0, 6);
+
+            EncoderDriveCommand strafe = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35  * allienceDirection, 17);
+            EncoderDriveCommand strafe1 = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35  * allienceDirection, 10);
+
+            EncoderDriveCommand strafeRightToLeftPixel = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, 0.35  * allienceDirection, 27.5);
+
+            Log.i("huskyBlocks", "pixelPosition " + pixelPosition);
+
+            return new SequentialCommandGroup(firstDrive, turnLeft,
                     new WaitCommand(75),
                     drive1,
                     strafeRightToLeftPixel,
@@ -73,17 +86,23 @@ public class CommandGroups {
                     closeclaw,
                     new WaitCommand(400),
                     backUp1,
-                    strafe
+                    strafe,
+                    drive2, //* this is a good spot for april tags *//
+                    strafe1,
+                    drive3,
+                    openclaw,
+                    backUp2
 
             );
 
-        } else if (alliance == Alliance.BLUE && huskyLensSubsystem.getPixelPosition() == PixelPosition.RIGHT ||  (alliance == Alliance.RED && huskyLensSubsystem.getPixelPosition() == PixelPosition.LEFT)) {
+        } else if (alliance == Alliance.BLUE && pixelPosition == PixelPosition.RIGHT ||  (alliance == Alliance.RED && pixelPosition == PixelPosition.LEFT)) {
 
             EncoderDriveCommand strafeLeftToRightPixel = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35  * allienceDirection, 20.5);
             EncoderDriveCommand driveforward = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 7);
             EncoderDriveCommand backUp2 = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 8);
             Command turnAround = new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, 90 * allienceDirection);
 
+            Log.i("huskyBlocks", "pixelPosition " + pixelPosition);
 
             return new SequentialCommandGroup(turnRight,
                     new WaitCommand(75),
@@ -103,6 +122,7 @@ public class CommandGroups {
             EncoderDriveCommand driveToCenterPosition = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 21);
             EncoderDriveCommand backUp1 = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 6);
 
+            Log.i("huskyBlocks", "pixelPosition " +pixelPosition);
 
             return new SequentialCommandGroup(
                     driveToCenterPosition,
