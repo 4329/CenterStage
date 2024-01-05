@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.commands.TurnToHeadingCommand;
 import org.firstinspires.ftc.teamcode.commands.UnInstantCommand;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.Commandlogger;
 import org.firstinspires.ftc.teamcode.subsystems.ElevatorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.Logvoltage;
@@ -47,7 +48,7 @@ public class OutsideAutoMid extends CommandOpMode {
         EncoderDriveCommand backUp1 = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 28.5);
 
 
-
+        new Commandlogger();
         Command openclaw = new UnInstantCommand(()-> clawSubsystem.open());
         Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.DROP_PIXEL, telemetry);
         register(new Logvoltage(hardwareMap));

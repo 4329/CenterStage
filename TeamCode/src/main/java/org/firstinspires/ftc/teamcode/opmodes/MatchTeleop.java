@@ -17,6 +17,7 @@ import org.firstinspires.ftc.teamcode.commands.MecanumDpadCommand;
 import org.firstinspires.ftc.teamcode.commands.MecanumDriveCommand;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.Commandlogger;
 import org.firstinspires.ftc.teamcode.subsystems.DroneSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ElevatorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSubsystem;
@@ -90,6 +91,8 @@ public class MatchTeleop extends CommandOpMode {
         mecanumDriveSubsystem.setDefaultCommand(driveMecanumCommand);
         elevatorSubsystem.setDefaultCommand(elevatorVerticalCommand);
         droneSubsystem.setDefaultCommand(firedemisillestoaliens);
+
+        new Commandlogger();
 
         register(new Logvoltage(hardwareMap), imuSubsystem, telemetryUpdateSubsystem);
 

@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.commands.TurnToHeadingCommand;
 import org.firstinspires.ftc.teamcode.commands.UnInstantCommand;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.Commandlogger;
 import org.firstinspires.ftc.teamcode.subsystems.ElevatorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.Logvoltage;
@@ -47,7 +48,7 @@ public class RedSimpleAuto extends CommandOpMode {
         turn = new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, -90);
         EncoderDriveCommand strafeLeft = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, 0.35, 20.5);
 
-
+        new Commandlogger();
         Command openclaw = new UnInstantCommand(()-> clawSubsystem.open());
         Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.DROP_PIXEL, telemetry);
         register(new Logvoltage(hardwareMap));

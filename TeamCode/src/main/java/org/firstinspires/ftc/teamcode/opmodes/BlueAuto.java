@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.commands.TurnToHeadingCommand;
 import org.firstinspires.ftc.teamcode.commands.UnInstantCommand;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.Commandlogger;
 import org.firstinspires.ftc.teamcode.subsystems.ElevatorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.Logvoltage;
@@ -62,6 +63,7 @@ public class BlueAuto extends CommandOpMode {
         EncoderDriveCommand strafe = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35, 30);
 
 
+        new Commandlogger();
         register(new Logvoltage(hardwareMap));
         schedule(new SequentialCommandGroup(imuReset.withTimeout(5000), elevatorReset, new WaitCommand(250), closeclaw, see.withTimeout(1500), scoreTheSpike, april, strafe));
     }
