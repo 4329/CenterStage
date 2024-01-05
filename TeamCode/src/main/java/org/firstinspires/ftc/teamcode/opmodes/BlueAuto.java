@@ -21,6 +21,7 @@ import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ElevatorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.HuskyLensSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.Logvoltage;
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.TelemetryUpdateSubsystem;
 import org.firstinspires.ftc.teamcode.util.Alliance;
@@ -62,7 +63,7 @@ public class BlueAuto extends CommandOpMode {
 
         EncoderDriveCommand driveToStart = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 6);
 
-
+        register(new Logvoltage(hardwareMap));
         schedule(new SequentialCommandGroup(reset, new WaitCommand(250), closeclaw, see.withTimeout(1000)));
     }
 

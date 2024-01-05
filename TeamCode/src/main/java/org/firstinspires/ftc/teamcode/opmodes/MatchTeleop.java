@@ -19,6 +19,7 @@ import org.firstinspires.ftc.teamcode.subsystems.DroneSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ElevatorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.HuskyLensSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.Logvoltage;
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.TelemetryUpdateSubsystem;
 import org.firstinspires.ftc.teamcode.util.Alliance;
@@ -92,7 +93,7 @@ public class MatchTeleop extends CommandOpMode {
         elevatorSubsystem.setDefaultCommand(elevatorVerticalCommand);
         droneSubsystem.setDefaultCommand(firedemisillestoaliens);
 
-        register(imuSubsystem, telemetryUpdateSubsystem);
+        register(new Logvoltage(hardwareMap), imuSubsystem, telemetryUpdateSubsystem);
 
         schedule(new ElevatorResetCommand(elevatorSubsystem, telemetry));
     }
