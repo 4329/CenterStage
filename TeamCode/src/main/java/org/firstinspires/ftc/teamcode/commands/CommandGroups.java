@@ -32,15 +32,11 @@ import java.util.function.Supplier;
 import javax.crypto.ExemptionMechanism;
 
 public class CommandGroups {
-
-    @NonNull
-    @Contract("_, _, _, _ -> new")
     public static Command totalZero(ArmSubsystem armSubsystem, ElevatorSubsystem elevatorSubsystem, Telemetry telemetry) {
 
         return new ParallelCommandGroup(
-                new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.DOWN, telemetry),
+                new ElevatorResetCommand(elevatorSubsystem, telemetry),
                 new ArmPositionCommand(armSubsystem, ArmPosition.IN));
-
 
     }
 

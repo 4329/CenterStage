@@ -34,6 +34,7 @@ public class ElevatorResetCommand extends CommandBase {
 
     @Override
     public void execute() {
+
         if (!downed) {
 
             Log.i("elevatorReset", "1NOT downed");
