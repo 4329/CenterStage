@@ -1,19 +1,23 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import android.util.Log;
+
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
+import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.util.ArmPosition;
 
 public class ArmSubsystem extends SubsystemBase {
-    private Motor armMotor;
+    private MotorEx armMotor;
     private Telemetry telemetry;
     private int setPoint;
 
     public ArmSubsystem(HardwareMap hm, Telemetry jerry) {
-        this.armMotor = new Motor(hm, "armMotor");
+        this.armMotor = new MotorEx(hm, "armMotor");
         this.armMotor.setInverted(false);
         this.telemetry = jerry;
         this.armMotor.setRunMode(Motor.RunMode.PositionControl);
@@ -44,6 +48,9 @@ public class ArmSubsystem extends SubsystemBase {
         telemetry.addLine("Arm actual position: " + armMotor.getCurrentPosition());
         telemetry.addLine("Arm setPoint: " + setPoint);
         telemetry.addLine("armError: " + Math.abs(setPoint - armMotor.getCurrentPosition()));
+        if(this.armMotor!=null) {
+            Log.i("battery", "arm current " + armMotor.motorEx.getCurrent(CurrentUnit.MILLIAMPS) + "mA");
+        }
     }
 
     public boolean armAtPosition() {
