@@ -1,17 +1,21 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import android.util.Log;
+
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
+import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.util.ElevatorPosition;
 import org.firstinspires.ftc.teamcode.util.MathUtil;
 
 public class ElevatorSubsystem extends SubsystemBase {
     private int setPoint;
-    private Motor elevatorMotor;
+    private MotorEx elevatorMotor;
     private Telemetry telemetry;
     private TouchSensor elevatorSensor;
     private boolean positionControl = true;
@@ -20,7 +24,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public ElevatorSubsystem(HardwareMap hm, Telemetry telemetry) {
         this.telemetry = telemetry;
-        elevatorMotor = new Motor(hm, "elevatorMotor");
+        elevatorMotor = new MotorEx(hm, "elevatorMotor");
         this.elevatorSensor = hm.get(TouchSensor.class, "elevatorSensor");
         switchPosition();
     }
@@ -45,6 +49,9 @@ public class ElevatorSubsystem extends SubsystemBase {
         if(this.elevatorMotor!=null && positionControl){
            this.elevatorMotor.set(0.5);
 
+        }
+        if(this.elevatorMotor!=null){
+            Log.i("battery", "elevator current " + elevatorMotor.motorEx.getCurrent(CurrentUnit.MILLIAMPS)+ "mA");
         }
 
         telemetry.addLine("Elevator setPoint:" + setPoint);
