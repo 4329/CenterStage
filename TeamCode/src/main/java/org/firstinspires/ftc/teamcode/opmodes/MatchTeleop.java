@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.commands.MecanumDriveCommand;
 import org.firstinspires.ftc.teamcode.commands.TurnToHeadingCommand;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.Commandlogger;
 import org.firstinspires.ftc.teamcode.subsystems.DroneSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ElevatorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.HuskyLensSubsystem;
@@ -85,10 +86,8 @@ public class MatchTeleop extends CommandOpMode {
 
 
 
-//        operator.getGamepadButton(GamepadKeys.Button.START).whileHeld(new HuskylensDetectCommand(huskyLensSubsystem, telemetry, Alliance.RED));
-//        operator.getGamepadButton(GamepadKeys.Button.BACK).whileHeld(new HuskylensDetectCommand(huskyLensSubsystem, telemetry, Alliance.BLUE));
-
-
+//        operator.getGamepadButton(GamepadKeys.Button.X).whileHeld(new HuskylensDetectCommand(huskyLensSubsystem, telemetry));
+        new Commandlogger();
         mecanumDriveSubsystem.setDefaultCommand(driveMecanumCommand);
         elevatorSubsystem.setDefaultCommand(elevatorVerticalCommand);
         droneSubsystem.setDefaultCommand(firedemisillestoaliens);
