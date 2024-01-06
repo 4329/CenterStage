@@ -21,9 +21,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     public ElevatorSubsystem(HardwareMap hm, Telemetry telemetry) {
         this.telemetry = telemetry;
         elevatorMotor = new Motor(hm, "elevatorMotor");
-        switchPosition();
         this.elevatorSensor = hm.get(TouchSensor.class, "elevatorSensor");
-
+        switchPosition();
     }
 
     public void goToPosition(ElevatorPosition sammy) {
@@ -31,8 +30,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         this.elevatorMotor.setTargetPosition(this.setPoint);
 
-        telemetry.addLine("Elevator setPoint:" + setPoint);
-        telemetry.addLine("Eleveator is at:" + elevatorMotor.getCurrentPosition());
+
 
 
     }
@@ -40,13 +38,17 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-
-        telemetry.addLine("the elevator is pressed?" + elevatorSensor.isPressed());
+        if (elevatorSensor != null) {
+            telemetry.addLine("the elevator is pressed?" + elevatorSensor.isPressed());
+        }
 
         if(this.elevatorMotor!=null && positionControl){
            this.elevatorMotor.set(0.5);
 
         }
+
+        telemetry.addLine("Elevator setPoint:" + setPoint);
+        telemetry.addLine("Eleveator is at:" + elevatorMotor.getCurrentPosition());
 
     }
 
@@ -73,8 +75,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         setPoint = newSetPoint;
 
         this.elevatorMotor.setTargetPosition(setPoint);
-
-        telemetry.addLine("Elevator setPoint:" + setPoint);
 
     }
 

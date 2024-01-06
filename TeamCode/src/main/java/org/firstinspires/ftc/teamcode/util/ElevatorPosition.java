@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.util;
 
 public enum ElevatorPosition {
 
-    DOWN(0), DROP_PIXEL(275), FIRSTSTAGE(1000), SECONGDSTAGE(1500), THIRDSTAGE(2000), UP(3141);
+    DOWN(0), PICKONEPPIXEL(150), DROP_PIXEL(275), FIRSTSTAGE(1000), SECONGDSTAGE(1500), THIRDSTAGE(2000), UP(3141);
     private int position;
 
     private ElevatorPosition(int position) {

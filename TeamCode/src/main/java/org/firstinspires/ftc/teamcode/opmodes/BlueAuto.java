@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.commands.ArmPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.CommandGroups;
 import org.firstinspires.ftc.teamcode.commands.ElevatorPosCommand;
 import org.firstinspires.ftc.teamcode.commands.ElevatorResetCommand;
@@ -23,8 +24,11 @@ import org.firstinspires.ftc.teamcode.subsystems.ImuSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.TelemetryUpdateSubsystem;
 import org.firstinspires.ftc.teamcode.util.Alliance;
+import org.firstinspires.ftc.teamcode.util.ArmPosition;
 import org.firstinspires.ftc.teamcode.util.ElevatorPosition;
 import org.firstinspires.ftc.teamcode.util.PixelPosition;
+
+import java.nio.file.Watchable;
 
 @Autonomous(name = "FullBlueAuto", group = "1")
 public class BlueAuto extends CommandOpMode {
@@ -51,14 +55,15 @@ public class BlueAuto extends CommandOpMode {
         clawSubsystem = new ClawSubsystem(hardwareMap, telemetry);
         armSubsystem = new ArmSubsystem(hardwareMap, telemetry);
         Command closeclaw = new UnInstantCommand(()-> clawSubsystem.close());
-        Command see = new HuskylensDetectCommand(huskyLensSubsystem, telemetry);
+        Command see = new HuskylensDetectCommand(huskyLensSubsystem,  telemetry, Alliance.BLUE,  mecanumDriveSubsystem,  clawSubsystem,  elevatorSubsystem,  imuSubsystem);
         Command reset = new ElevatorResetCommand(elevatorSubsystem, telemetry);
 
-        Command dropOffFirstPixel = CommandGroups.dropOffFirstPixel(huskyLensSubsystem, Alliance.BLUE, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry,  imuSubsystem);
+
+
         EncoderDriveCommand driveToStart = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 6);
 
 
-        schedule(new SequentialCommandGroup(reset, closeclaw, see, new WaitCommand(1000), dropOffFirstPixel));
+        schedule(new SequentialCommandGroup(reset, new WaitCommand(250), closeclaw, see.withTimeout(1000)));
     }
 
 }
