@@ -53,7 +53,7 @@ public class CommandGroups {
         Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.PICKONEPPIXEL, telemetry);
 
 
-        if (alliance == Alliance.BLUE && pixelPosition == PixelPosition.LEFT || (alliance == Alliance.RED && pixelPosition == PixelPosition.RIGHT)) {
+        if (pixelPosition == PixelPosition.LEFT) {
 
             EncoderDriveCommand firstDrive = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 1.5);
 
@@ -70,7 +70,7 @@ public class CommandGroups {
 
             EncoderDriveCommand strafeRightToLeftPixel = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, 0.35  * allienceDirection, 27.5);
 
-            Log.i("huskyBlocks", "pixelPosition " + pixelPosition);
+            Log.i("huskyBlocks", "pixelPosition 3" + pixelPosition);
 
             return new SequentialCommandGroup(firstDrive, turnLeft,
                     new WaitCommand(75),
@@ -92,14 +92,14 @@ public class CommandGroups {
 
             );
 
-        } else if (alliance == Alliance.BLUE && pixelPosition == PixelPosition.RIGHT ||  (alliance == Alliance.RED && pixelPosition == PixelPosition.LEFT)) {
+        } else if (pixelPosition == PixelPosition.RIGHT) {
 
 //            EncoderDriveCommand strafeLeftToRightPixel = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35  * allienceDirection, 25);
             EncoderDriveCommand strafe = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35  * allienceDirection, 24);
 
-            EncoderDriveCommand driveforward = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 4.5);
-            EncoderDriveCommand firstDrive = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 25);
-            EncoderDriveCommand drive = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 41);
+            EncoderDriveCommand driveforward = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 3.75);
+            EncoderDriveCommand firstDrive = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 24);
+            EncoderDriveCommand drive = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 40);
 
 
             EncoderDriveCommand backUp2 = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 10);
@@ -107,7 +107,7 @@ public class CommandGroups {
 
             Command turnAround = new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, 90 * allienceDirection);
 
-            Log.i("huskyBlocks", "pixelPosition " + pixelPosition);
+            Log.i("huskyBlocks", "pixelPosition 1" + pixelPosition);
 
             return new SequentialCommandGroup(firstDrive, turnRight,
                     new WaitCommand(75),
@@ -119,7 +119,7 @@ public class CommandGroups {
                     new WaitCommand(400),
                     backUp2,
                     turnAround,
-                    new WaitCommand(150),//* this is a good spot for april tags *//
+                    new WaitCommand(200),//* this is a good spot for april tags *//
                     strafe,
                     drive,
                     openclaw,
@@ -131,15 +131,17 @@ public class CommandGroups {
         } else {
 
             EncoderDriveCommand driveToCenterPosition = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 26.5);
-            EncoderDriveCommand drive1 = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 44);
+            EncoderDriveCommand drive1 = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 35);
 
             EncoderDriveCommand backUp1 = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 13);
             EncoderDriveCommand backUp2 = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 6);
 
-            EncoderDriveCommand strafe = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35  * allienceDirection, 14);
+            EncoderDriveCommand strafe = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35  * allienceDirection, 15.5);
+            EncoderDriveCommand strafe1 = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35  * allienceDirection, 4);
 
 
-            Log.i("huskyBlocks", "pixelPosition " +pixelPosition);
+
+            Log.i("huskyBlocks", "pixelPosition 2" + pixelPosition);
 
             return new SequentialCommandGroup(
                     driveToCenterPosition,
@@ -149,6 +151,7 @@ public class CommandGroups {
                     closeclaw,
                     new WaitCommand(400),
                     backUp1,
+                    strafe1,
                     turnLeft,
                     new WaitCommand(75),//* this is a good spot for april tags *//
                     strafe,

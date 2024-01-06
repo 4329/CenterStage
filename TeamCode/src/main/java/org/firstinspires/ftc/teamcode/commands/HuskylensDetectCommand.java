@@ -7,6 +7,7 @@ import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.qualcomm.hardware.dfrobot.HuskyLens;
 
+import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ElevatorSubsystem;
@@ -30,7 +31,7 @@ public class HuskylensDetectCommand extends CommandBase {
     private ElevatorSubsystem elevatorSubsystem;
     private ImuSubsystem imuSubsystem;
     private int count;
-    private double positionConfidence = 0.75;
+    private double positionConfidence = 0.7;
 
     public HuskylensDetectCommand(HuskyLensSubsystem huskyLensSubsystem, Telemetry telemetry, Alliance alliance, MecanumDriveSubsystem mecanumDriveSubsystem, ClawSubsystem clawSubsystem, ElevatorSubsystem elevatorSubsystem, ImuSubsystem imuSubsystem) {
         this.huskyLensSubsystem = huskyLensSubsystem;
@@ -63,7 +64,7 @@ public class HuskylensDetectCommand extends CommandBase {
             Log.i("huskyBlocks", "blockRatio" + blockRatio);
             Log.i("huskyBlocks", "block coordinates" + "(" + block.x + "," + block.y + ")");
 
-            if (blockRatio > 0.90 && blockRatio < 1.10) {
+            if (blockRatio > 0.85 && blockRatio < 1.15) {
 
                 lastBlocks.add(block);
 
@@ -110,6 +111,12 @@ public class HuskylensDetectCommand extends CommandBase {
         }
 
         right = count - left - center;
+        if (alliance == Alliance.RED) {
+            int temp = left;
+            left = right;
+            right = temp;
+
+        }
 
         Log.i("huskyBlocks", "left, center, right " + left + "," + center + "," + right);
 

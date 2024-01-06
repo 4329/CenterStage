@@ -57,8 +57,7 @@ public class BlueAuto extends CommandOpMode {
         Command closeclaw = new UnInstantCommand(()-> clawSubsystem.close());
         Command see = new HuskylensDetectCommand(huskyLensSubsystem,  telemetry, Alliance.BLUE,  mecanumDriveSubsystem,  clawSubsystem,  elevatorSubsystem,  imuSubsystem);
         Command reset = new ElevatorResetCommand(elevatorSubsystem, telemetry);
-        Command raise = new ArmPositionCommand(armSubsystem, ArmPosition.OUT);
-        Command lower = new ArmPositionCommand(armSubsystem, ArmPosition.IN);
+
 
 
         EncoderDriveCommand driveToStart = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 6);

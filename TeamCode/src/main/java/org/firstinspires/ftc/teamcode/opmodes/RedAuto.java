@@ -47,16 +47,16 @@ public class RedAuto extends CommandOpMode {
         elevatorSubsystem = new ElevatorSubsystem(hardwareMap, telemetry);
         clawSubsystem = new ClawSubsystem(hardwareMap, telemetry);
         armSubsystem = new ArmSubsystem(hardwareMap, telemetry);
+        huskyLensSubsystem = new HuskyLensSubsystem(hardwareMap, telemetry);
         Command closeclaw = new UnInstantCommand(()-> clawSubsystem.close());
         Command see = new HuskylensDetectCommand(huskyLensSubsystem,  telemetry, Alliance.RED,  mecanumDriveSubsystem,  clawSubsystem,  elevatorSubsystem,  imuSubsystem);
         Command reset = new ElevatorResetCommand(elevatorSubsystem, telemetry);
-        Command raise = new ArmPositionCommand(armSubsystem, ArmPosition.OUT);
-        Command lower = new ArmPositionCommand(armSubsystem, ArmPosition.IN);
+
 
 
         EncoderDriveCommand driveToStart = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 6);
 
 
-        schedule(new SequentialCommandGroup(reset, closeclaw, see.withTimeout(1000)));    }
+        schedule(new SequentialCommandGroup(reset, new WaitCommand(250), closeclaw, see.withTimeout(1000)));    }
 
 }

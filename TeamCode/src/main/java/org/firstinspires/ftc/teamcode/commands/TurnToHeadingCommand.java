@@ -23,16 +23,16 @@ public class TurnToHeadingCommand extends CommandBase {
         this.imu = imuSubsystem;
         this.telemetry = telemetry;
         this.DesiredAngle = DesiredAngle;
-        this.frcPid = new FrcPidController(0.025, 0, 0.000075);
+        this.frcPid = new FrcPidController(0.025, 0, 0.00095); //kd was 0.000075
         addRequirements(mecanumDriveSubsystem);
     }
 
     @Override
     public void initialize() {
         frcPid.setSetpoint(DesiredAngle);
-        frcPid.setTolerance(0.1);
+        frcPid.setTolerance(0.5);
         frcPid.enableContinuousInput(-180, 180);
-        Log.i("heading", "start");
+        Log.i("turnCommand", "turnstarting");
 
     }
 
@@ -40,17 +40,18 @@ public class TurnToHeadingCommand extends CommandBase {
     public void execute() {
 
         telemetry.addLine("is going");
-        Log.i("heading", "running");
-        double output = frcPid.calculate(imu.getHeading());
-
+        double heading = imu.getHeading();
+        double output = frcPid.calculate(heading);
         drive.drive(0, -output, 0);
+        Log.i("turnCommand", "desired angle, heading, output " + "(" + DesiredAngle + ", " + heading + ", " + output + ")");
     }
 
     @Override
     public void end(boolean interrupted) {
 
         drive.stop();
-        Log.i("heading", "end");
+        Log.i("turnCommand", "TURNFINISHED");
+
 
     }
 
