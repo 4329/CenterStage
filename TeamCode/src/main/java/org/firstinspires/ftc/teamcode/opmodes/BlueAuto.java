@@ -5,12 +5,7 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.commands.ArmPositionCommand;
-import org.firstinspires.ftc.teamcode.commands.CommandGroups;
-import org.firstinspires.ftc.teamcode.commands.ElevatorPosCommand;
 import org.firstinspires.ftc.teamcode.commands.ElevatorResetCommand;
 import org.firstinspires.ftc.teamcode.commands.EncoderDriveCommand;
 import org.firstinspires.ftc.teamcode.commands.HuskylensDetectCommand;
@@ -18,19 +13,14 @@ import org.firstinspires.ftc.teamcode.commands.TurnToHeadingCommand;
 import org.firstinspires.ftc.teamcode.commands.UnInstantCommand;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.Commandlogger;
+import org.firstinspires.ftc.teamcode.util.CommandLogger;
 import org.firstinspires.ftc.teamcode.subsystems.ElevatorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.HuskyLensSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.Logvoltage;
+import org.firstinspires.ftc.teamcode.subsystems.LogVoltageSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.TelemetryUpdateSubsystem;
 import org.firstinspires.ftc.teamcode.util.Alliance;
-import org.firstinspires.ftc.teamcode.util.ArmPosition;
-import org.firstinspires.ftc.teamcode.util.ElevatorPosition;
-import org.firstinspires.ftc.teamcode.util.PixelPosition;
-
-import java.nio.file.Watchable;
 
 @Autonomous(name = "FullBlueAuto", group = "1")
 public class BlueAuto extends CommandOpMode {
@@ -62,8 +52,8 @@ public class BlueAuto extends CommandOpMode {
 
 
         EncoderDriveCommand driveToStart = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 6);
-        new Commandlogger();
-        register(new Logvoltage(hardwareMap));
+        new CommandLogger();
+        register(new LogVoltageSubsystem(hardwareMap));
 
         schedule(new SequentialCommandGroup(reset, new WaitCommand(250), closeclaw, see.withTimeout(1000)));
     }
