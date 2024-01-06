@@ -12,12 +12,12 @@ import org.firstinspires.ftc.teamcode.commands.TurnToHeadingCommand;
 import org.firstinspires.ftc.teamcode.commands.UnInstantCommand;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.Commandlogger;
 import org.firstinspires.ftc.teamcode.subsystems.ElevatorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.Logvoltage;
+import org.firstinspires.ftc.teamcode.subsystems.LogVoltageSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.TelemetryUpdateSubsystem;
+import org.firstinspires.ftc.teamcode.util.CommandLogger;
 import org.firstinspires.ftc.teamcode.util.ElevatorPosition;
 
 @Autonomous(name = "Simple Red", group = "1")
@@ -48,10 +48,10 @@ public class RedSimpleAuto extends CommandOpMode {
         turn = new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, -90);
         EncoderDriveCommand strafeLeft = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, 0.35, 20.5);
 
-        new Commandlogger();
+        new CommandLogger();
         Command openclaw = new UnInstantCommand(()-> clawSubsystem.open());
         Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.DROP_PIXEL, telemetry);
-        register(new Logvoltage(hardwareMap));
+        register(new LogVoltageSubsystem(hardwareMap));
         schedule(new SequentialCommandGroup(closeclaw, new WaitCommand(800), driveforward, new WaitCommand(250), openclaw, new WaitCommand(650), upounopixelo, new WaitCommand(200), closeclaw, new WaitCommand(400), backUp1, turn, strafeLeft, driveToCanvas, openclaw));
     }
 }

@@ -6,11 +6,11 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
-public class Logvoltage extends SubsystemBase {
+public class LogVoltageSubsystem extends SubsystemBase {
     private final VoltageSensor CHsensor;
     private final VoltageSensor EHsensor;
 
-    public Logvoltage(HardwareMap HM) {
+    public LogVoltageSubsystem(HardwareMap HM) {
         this.CHsensor=HM.get(VoltageSensor.class, "Control Hub");
         this.EHsensor=HM.get(VoltageSensor.class, "Expansion Hub");
         }

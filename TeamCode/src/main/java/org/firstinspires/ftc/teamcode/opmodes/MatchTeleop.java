@@ -7,7 +7,6 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.hardware.dfrobot.HuskyLensSubsystem;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.commands.AprilCamCommand;
 import org.firstinspires.ftc.teamcode.commands.CommandGroups;
 import org.firstinspires.ftc.teamcode.commands.ElevatorResetCommand;
 import org.firstinspires.ftc.teamcode.commands.ElevatorVerticalCommand;
@@ -17,15 +16,15 @@ import org.firstinspires.ftc.teamcode.commands.MecanumDpadCommand;
 import org.firstinspires.ftc.teamcode.commands.MecanumDriveCommand;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.Commandlogger;
 import org.firstinspires.ftc.teamcode.subsystems.DroneSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ElevatorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.Logvoltage;
+import org.firstinspires.ftc.teamcode.subsystems.LogVoltageSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.TelemetryUpdateSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.WebcamSubsystem;
 import org.firstinspires.ftc.teamcode.util.ArmPosition;
+import org.firstinspires.ftc.teamcode.util.CommandLogger;
 
 @TeleOp(name = "Match Teleop", group = "1")
 public class MatchTeleop extends CommandOpMode {
@@ -88,13 +87,14 @@ public class MatchTeleop extends CommandOpMode {
         operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(()-> clawSubsystem.onePixel());
 
 
+
+//        operator.getGamepadButton(GamepadKeys.Button.X).whileHeld(new HuskylensDetectCommand(huskyLensSubsystem, telemetry));
+        new CommandLogger();
         mecanumDriveSubsystem.setDefaultCommand(driveMecanumCommand);
         elevatorSubsystem.setDefaultCommand(elevatorVerticalCommand);
         droneSubsystem.setDefaultCommand(firedemisillestoaliens);
 
-        new Commandlogger();
-
-        register(new Logvoltage(hardwareMap), imuSubsystem, telemetryUpdateSubsystem);
+        register(new LogVoltageSubsystem(hardwareMap), imuSubsystem, telemetryUpdateSubsystem);
 
         schedule(new InitializeNavxCommand(imuSubsystem, telemetry), new ElevatorResetCommand(elevatorSubsystem, telemetry));
     }

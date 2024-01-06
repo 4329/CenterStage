@@ -15,14 +15,14 @@ import org.firstinspires.ftc.teamcode.commands.InitializeNavxCommand;
 import org.firstinspires.ftc.teamcode.commands.UnInstantCommand;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.Commandlogger;
 import org.firstinspires.ftc.teamcode.subsystems.ElevatorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.Logvoltage;
+import org.firstinspires.ftc.teamcode.subsystems.LogVoltageSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.TelemetryUpdateSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.WebcamSubsystem;
 import org.firstinspires.ftc.teamcode.util.Alliance;
+import org.firstinspires.ftc.teamcode.util.CommandLogger;
 import org.firstinspires.ftc.teamcode.util.SpikeMarkLocation;
 
 @Autonomous(name = "FullRedAuto", group = "1")
@@ -49,16 +49,16 @@ public class RedAuto extends CommandOpMode {
         armSubsystem = new ArmSubsystem(hardwareMap, telemetry);
         huskyLensSubsystem = new HuskyLensSubsystem(hardwareMap, telemetry);
         webcamSubsystem = new WebcamSubsystem(hardwareMap, telemetry);
-        Command closeclaw = new UnInstantCommand(()-> clawSubsystem.close());
-        Command see = new HuskylensDetectCommand(huskyLensSubsystem,  telemetry, Alliance.RED);
+        Command closeclaw = new UnInstantCommand(() -> clawSubsystem.close());
+        Command see = new HuskylensDetectCommand(huskyLensSubsystem, telemetry, Alliance.RED);
         Command elevatorReset = new ElevatorResetCommand(elevatorSubsystem, telemetry);
         Command imuReset = new InitializeNavxCommand(imuSubsystem, telemetry);
         Command scoreTheSpike = CommandGroups.driveToDesiredSpikeMark(Alliance.RED, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry, imuSubsystem, armSubsystem);
         Command april = CommandGroups.aprilTagScore(Alliance.RED, mecanumDriveSubsystem, webcamSubsystem, elevatorSubsystem, armSubsystem, clawSubsystem, telemetry);
         EncoderDriveCommand strafe = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, 0.35, 30);
 
-        new Commandlogger();
-        register(new Logvoltage(hardwareMap));
-        schedule(new SequentialCommandGroup(imuReset.withTimeout(5000), elevatorReset, new WaitCommand(250), closeclaw, see.withTimeout(1500), scoreTheSpike, april, strafe));    }
-
+        new CommandLogger();
+        register(new LogVoltageSubsystem(hardwareMap));
+        schedule(new SequentialCommandGroup(imuReset.withTimeout(5000), elevatorReset, new WaitCommand(250), closeclaw, see.withTimeout(1500), scoreTheSpike, april, strafe));
+    }
 }
