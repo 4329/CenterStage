@@ -1,5 +1,7 @@
 package com.qualcomm.hardware.dfrobot;
 
+import android.util.Log;
+
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -19,6 +21,8 @@ public class HuskyLensSubsystem extends SubsystemBase {
 
     private SpikeMark spikeMark;
 
+    private List<String> telemetryMessages = new ArrayList<>();
+
     public HuskyLensSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
 
         huskyLens = hardwareMap.get(HuskyLens.class, "huskyLens");
@@ -29,16 +33,14 @@ public class HuskyLensSubsystem extends SubsystemBase {
     }
 
     public List<HuskyLens.Block> detectBlocks(Alliance alliance) {
+        telemetryMessages.clear();
         List <HuskyLens.Block> blockList = new ArrayList<>();
         HuskyLens.Block[] blocks = huskyLens.blocks();
-        telemetry.addData("Block count", blocks.length);
+        Log.i("huskyBlocks", "Block count: " + blocks.length);
 
-        for (int i = 0; i < blocks.length; i++) {
-            telemetry.addData("Block", blocks[i].toString());
-        }
         if (blocks.length > 0) {
-
             for (int i = 0; i < blocks.length; i++) {
+                Log.i("huskyBlocks", "Block[" + i + "]: " + blocks[i].toString());
                 if (alliance == Alliance.BLUE && blocks[i].id == 1) {
                     lastBlock = blocks[i];
                     blockList.add(blocks[i]);
@@ -48,9 +50,7 @@ public class HuskyLensSubsystem extends SubsystemBase {
                     lastBlock = blocks[i];
                     blockList.add(blocks[i]);
                 }
-
             }
-
         }
 
         return blockList;
@@ -58,5 +58,15 @@ public class HuskyLensSubsystem extends SubsystemBase {
 
     public void savePicture() {
         huskyLens.sendCommand((byte)0x39);
+    }
+    public void addTelemetryMessage(String msg) {
+        telemetryMessages.add(msg);
+    }
+
+    @Override
+    public void periodic() {
+        for (String msg : telemetryMessages) {
+            telemetry.addLine(msg);
+        }
     }
 }
