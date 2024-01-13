@@ -33,7 +33,7 @@ public class HuskyLensSubsystem extends SubsystemBase {
     }
 
     public List<HuskyLens.Block> detectBlocks(Alliance alliance) {
-        telemetryMessages.clear();
+        //telemetryMessages.clear();
         List <HuskyLens.Block> blockList = new ArrayList<>();
         HuskyLens.Block[] blocks = huskyLens.blocks();
         Log.i("huskyBlocks", "Block count: " + blocks.length);
@@ -66,7 +66,11 @@ public class HuskyLensSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         for (String msg : telemetryMessages) {
-            telemetry.addLine(msg);
+            telemetry.addData(msg, "");
         }
+    }
+
+    public void clearMessages() {
+        telemetryMessages.clear();
     }
 }

@@ -17,10 +17,10 @@ import java.util.List;
 public class HuskylensDetectCommand extends CommandBase {
 
     private HuskyLensSubsystem huskyLensSubsystem;
-    private List<HuskyLens.Block> lastBlocks;
+    private List<HuskyLens.Block> lastBlocks = new ArrayList<>();
     private Telemetry telemetry;
     private Alliance alliance;
-    private int count;
+    private int count = 0;
     private double positionConfidence = 0.7;
     private List<Double> ratios = new ArrayList<>();
 
@@ -28,6 +28,7 @@ public class HuskylensDetectCommand extends CommandBase {
         this.huskyLensSubsystem = huskyLensSubsystem;
         this.telemetry = telemetry;
         this.alliance = alliance;
+        addRequirements(huskyLensSubsystem);
     }
 
     @Override
