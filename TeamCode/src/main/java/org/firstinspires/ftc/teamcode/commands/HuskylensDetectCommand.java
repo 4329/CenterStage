@@ -64,7 +64,7 @@ public class HuskylensDetectCommand extends CommandBase {
             Log.i("huskyBlocks", "blockRatio" + blockRatio);
             Log.i("huskyBlocks", "block coordinates" + "(" + block.x + "," + block.y + ")");
 
-            if (blockRatio > 0.85 && blockRatio < 1.15) {
+            if (block.width > 40) {
 
                 lastBlocks.add(block);
 
