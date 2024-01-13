@@ -40,9 +40,10 @@ public class CommandGroups {
 
     }
 
-    public static Command dropOffFirstPixel(PixelPosition pixelPosition, Alliance alliance, MecanumDriveSubsystem mecanumDriveSubsystem, ClawSubsystem clawSubsystem, ElevatorSubsystem elevatorSubsystem, Telemetry telemetry, ImuSubsystem imuSubsystem) {
+    public static Command dropOffFirstPixel(PixelPosition pixelPosition, Alliance alliance, MecanumDriveSubsystem mecanumDriveSubsystem, ClawSubsystem clawSubsystem, ElevatorSubsystem elevatorSubsystem, Telemetry telemetry, ImuSubsystem imuSubsystem, ArmSubsystem armSubsytem) {
 
         double allienceDirection = Alliance.BLUE.equals(alliance) ? 1.0 : -1.0;
+
 
         Command turnLeft = new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, 90 * allienceDirection);
         Command turnRight = new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, -90 * allienceDirection);
@@ -100,10 +101,18 @@ public class CommandGroups {
             EncoderDriveCommand driveforward = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 3.75);
             EncoderDriveCommand firstDrive = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 24);
             EncoderDriveCommand drive = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 40);
+            EncoderDriveCommand drive1 = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 40);
+            Command arm1= new ArmPositionCommand(armSubsytem, ArmPosition.OUT);
+            Command elevator1 = new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.SECONGDSTAGE, telemetry);
+            Command elevator2 = new ElevatorResetCommand(elevatorSubsystem, telemetry);
 
 
-            EncoderDriveCommand backUp2 = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 10);
+
+//            EncoderDriveCommand backUp2 = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 10);
+          EncoderDriveCommand backUp2 = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 5);
+
             EncoderDriveCommand backUp3 = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 6);
+
 
             Command turnAround = new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, 90 * allienceDirection);
 
@@ -119,7 +128,9 @@ public class CommandGroups {
                     new WaitCommand(400),
                     backUp2,
                     turnAround,
-                    new WaitCommand(200),//* this is a good spot for april tags *//
+                    new WaitCommand(200),
+
+                    //* this is a good spot for april tags *//
                     strafe,
                     drive,
                     openclaw,
@@ -131,15 +142,22 @@ public class CommandGroups {
         } else {
 
             EncoderDriveCommand driveToCenterPosition = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 26.5);
-            EncoderDriveCommand drive1 = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 35);
+            EncoderDriveCommand drive1 = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 33);
 
-            EncoderDriveCommand backUp1 = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 13);
+            EncoderDriveCommand backUp1 = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 3);
             EncoderDriveCommand backUp2 = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 6);
 
             EncoderDriveCommand strafe = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35  * allienceDirection, 15.5);
             EncoderDriveCommand strafe1 = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35  * allienceDirection, 4);
 
+            EncoderDriveCommand backUp4 = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 4);
 
+            Command arm1= new ArmPositionCommand(armSubsytem, ArmPosition.OUT);
+            Command arm2 = new ArmPositionCommand(armSubsytem, ArmPosition.IN);
+
+            Command elevator1 = new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.FIRSTSTAGE, telemetry);
+
+            Command elevator2 = new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.DOWN, telemetry);
 
             Log.i("huskyBlocks", "pixelPosition 2" + pixelPosition);
 
@@ -151,14 +169,25 @@ public class CommandGroups {
                     closeclaw,
                     new WaitCommand(400),
                     backUp1,
-                    strafe1,
                     turnLeft,
-                    new WaitCommand(75),//* this is a good spot for april tags *//
-                    strafe,
+                    new WaitCommand(75),
+                    arm1.withTimeout(150),
+                    elevator1,
                     drive1,
                     openclaw,
-                    new WaitCommand(1000),
-                    backUp2
+                    new WaitCommand(150),
+                    backUp4,
+                    arm2.withTimeout(150),
+                    elevator2
+
+
+
+//                    //* this is a good spot for april tags *//
+//                    strafe,
+//                    drive1,
+//                    openclaw,
+//                    new WaitCommand(1000),
+//                    backUp2
                     );
 
         }

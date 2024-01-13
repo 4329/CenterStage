@@ -9,6 +9,7 @@ import com.qualcomm.hardware.dfrobot.HuskyLens;
 
 import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ElevatorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.HuskyLensSubsystem;
@@ -30,10 +31,11 @@ public class HuskylensDetectCommand extends CommandBase {
     private ClawSubsystem clawSubsystem;
     private ElevatorSubsystem elevatorSubsystem;
     private ImuSubsystem imuSubsystem;
+    private ArmSubsystem armSubsystem;
     private int count;
     private double positionConfidence = 0.7;
 
-    public HuskylensDetectCommand(HuskyLensSubsystem huskyLensSubsystem, Telemetry telemetry, Alliance alliance, MecanumDriveSubsystem mecanumDriveSubsystem, ClawSubsystem clawSubsystem, ElevatorSubsystem elevatorSubsystem, ImuSubsystem imuSubsystem) {
+    public HuskylensDetectCommand(HuskyLensSubsystem huskyLensSubsystem, Telemetry telemetry, Alliance alliance, MecanumDriveSubsystem mecanumDriveSubsystem, ClawSubsystem clawSubsystem, ElevatorSubsystem elevatorSubsystem, ImuSubsystem imuSubsystem, ArmSubsystem armSubsystem) {
         this.huskyLensSubsystem = huskyLensSubsystem;
         this.telemetry = telemetry;
         this.alliance = alliance;
@@ -42,6 +44,7 @@ public class HuskylensDetectCommand extends CommandBase {
         this.clawSubsystem = clawSubsystem;
         this.elevatorSubsystem = elevatorSubsystem;
         this.imuSubsystem = imuSubsystem;
+        this.armSubsystem = armSubsystem;
     }
 
     @Override
@@ -138,7 +141,7 @@ public class HuskylensDetectCommand extends CommandBase {
             pixelPosition = PixelPosition.CENTER;
         }
 
-        Command firstPixel = CommandGroups.dropOffFirstPixel(pixelPosition,  alliance,  mecanumDriveSubsystem,  clawSubsystem,  elevatorSubsystem,  telemetry,  imuSubsystem);
+        Command firstPixel = CommandGroups.dropOffFirstPixel(pixelPosition,  alliance,  mecanumDriveSubsystem,  clawSubsystem,  elevatorSubsystem,  telemetry,  imuSubsystem, armSubsystem);
 
         CommandScheduler.getInstance().schedule(firstPixel);
     }
