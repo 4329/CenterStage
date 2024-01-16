@@ -4,24 +4,22 @@ import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.qualcomm.hardware.dfrobot.HuskyLensSubsystem;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
 import org.firstinspires.ftc.teamcode.commands.CommandGroups;
 import org.firstinspires.ftc.teamcode.commands.ElevatorResetCommand;
 import org.firstinspires.ftc.teamcode.commands.ElevatorVerticalCommand;
 import org.firstinspires.ftc.teamcode.commands.FireZeMisslizCommand;
-import org.firstinspires.ftc.teamcode.commands.HuskylensDetectCommand;
 import org.firstinspires.ftc.teamcode.commands.MecanumDpadCommand;
 import org.firstinspires.ftc.teamcode.commands.MecanumDriveCommand;
-import org.firstinspires.ftc.teamcode.commands.TurnToHeadingCommand;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DroneSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ElevatorSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.HuskyLensSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.TelemetryUpdateSubsystem;
-import org.firstinspires.ftc.teamcode.util.Alliance;
 import org.firstinspires.ftc.teamcode.util.ArmPosition;
 
 @TeleOp(name = "Match Teleop", group = "1")

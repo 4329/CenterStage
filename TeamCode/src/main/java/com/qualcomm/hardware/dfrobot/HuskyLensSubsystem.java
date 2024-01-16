@@ -1,7 +1,6 @@
-package org.firstinspires.ftc.teamcode.subsystems;
+package com.qualcomm.hardware.dfrobot;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
-import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -57,4 +56,7 @@ public class HuskyLensSubsystem extends SubsystemBase {
         return blockList;
     }
 
+    public void savePicture() {
+        huskyLens.sendCommand((byte)0x39);
+    }
 }

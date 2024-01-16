@@ -173,35 +173,19 @@ public class CommandGroups {
     }
 
     public static Command driveToDesiredSpikeMark(Alliance alliance, MecanumDriveSubsystem mecanumDriveSubsystem, ClawSubsystem clawSubsystem, ElevatorSubsystem elevatorSubsystem, Telemetry telemetry, ImuSubsystem imuSubsystem, ArmSubsystem armSubsystem) {
-
         return new SelectCommand(new HashMap<Object, Command>() {{
-
             put (SpikeMark.ONE, dropOffSpike1(alliance, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry, imuSubsystem));
             put (SpikeMark.TWO, dropOffSpike2(alliance, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry, imuSubsystem, armSubsystem));
             put (SpikeMark.THREE, dropOffSpike3(alliance, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry, imuSubsystem));
-
-        }},
-
-
-                SpikeMarkLocation::getCurrentSpikeMark
-
+          }},
+          SpikeMarkLocation::getCurrentSpikeMark
         );
-
-
     }
 
-
-
-
-
-
     public static Command frontSpike1(Alliance alliance, MecanumDriveSubsystem mecanumDriveSubsystem, ClawSubsystem clawSubsystem, ElevatorSubsystem elevatorSubsystem, Telemetry telemetry, ImuSubsystem imuSubsystem) {
-
-
         double allienceDirection = Alliance.BLUE.equals(alliance) ? 1.0 : -1.0;
 
         Log.i("HuskyBlocks", "FrontStage1");
-
 
         EncoderDriveCommand driveforward = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 3.75);
         EncoderDriveCommand firstDrive = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 24);
@@ -224,11 +208,8 @@ public class CommandGroups {
                 new WaitCommand(400),
                 backUp2,
                 elevatorDown
-
-
-                );
-
-        }
+        );
+    }
 
     public static Command frontSpike2(Alliance alliance, MecanumDriveSubsystem mecanumDriveSubsystem, ClawSubsystem clawSubsystem, ElevatorSubsystem elevatorSubsystem, Telemetry telemetry, ImuSubsystem imuSubsystem) {
 
@@ -251,9 +232,6 @@ public class CommandGroups {
 
         EncoderDriveCommand backUp1 = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 6);
 
-
-
-
         return new SequentialCommandGroup(
                 driveToCenterPosition,
                 openclaw,
@@ -262,15 +240,10 @@ public class CommandGroups {
                 new WaitCommand(400),
                 backUp1,
                 elevatorDown
-
-
         );
-
     }
 
     public static Command frontSpike3(Alliance alliance, MecanumDriveSubsystem mecanumDriveSubsystem, ClawSubsystem clawSubsystem, ElevatorSubsystem elevatorSubsystem, Telemetry telemetry, ImuSubsystem imuSubsystem) {
-
-
         Log.i("HuskyBlocks", "frontStage3");
         double allienceDirection = Alliance.BLUE.equals(alliance) ? 1.0 : -1.0;
 
@@ -293,8 +266,6 @@ public class CommandGroups {
         Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.FIRSTSTAGE, telemetry);
         Command elevatorDown = new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.DOWN, telemetry);
 
-
-
         return new SequentialCommandGroup(firstDrive, strafe1, turnRight,
                 new WaitCommand(75),
                 backUp2,
@@ -311,20 +282,12 @@ public class CommandGroups {
     }
 
     public static Command driveToDesiredFrontSpikeMark(Alliance alliance, MecanumDriveSubsystem mecanumDriveSubsystem, ClawSubsystem clawSubsystem, ElevatorSubsystem elevatorSubsystem, Telemetry telemetry, ImuSubsystem imuSubsystem) {
-
         return new SelectCommand(new HashMap<Object, Command>() {{
-
             put(SpikeMark.ONE, frontSpike1(alliance, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry, imuSubsystem));
             put(SpikeMark.TWO, frontSpike2(alliance, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry, imuSubsystem));
             put(SpikeMark.THREE, frontSpike3(alliance, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry, imuSubsystem));
-
-
-        }},
-
-                SpikeMarkLocation::getCurrentSpikeMark
-
+          }},
+          SpikeMarkLocation::getCurrentSpikeMark
         );
-
     }
-
 }
