@@ -23,6 +23,8 @@ import java.util.List;
 
 public class HuskylensDetectCommand extends CommandBase {
 
+    private final int MIN_WIDTH=40;
+    private final int MIN_HEIGHT=40;
     private HuskyLensSubsystem huskyLensSubsystem;
     private List<HuskyLens.Block> lastBlocks;
     private Telemetry telemetry;
@@ -67,10 +69,15 @@ public class HuskylensDetectCommand extends CommandBase {
             Log.i("huskyBlocks", "blockRatio" + blockRatio);
             Log.i("huskyBlocks", "block coordinates" + "(" + block.x + "," + block.y + ")");
 
-            if (block.width > 40) {
-
+            if (block.width > MIN_WIDTH && block.height> MIN_HEIGHT) {
+                // trying to filter out detection of tape
                 lastBlocks.add(block);
 
+            }
+            else {
+//                Log.i(this.getName(), "execute: Dropping block due to low width or height - ("+
+//                        block.x + "," + block.y + ")");
+                Log.i(this.getName(), "execute: Dropping block "+block);
             }
 
         }

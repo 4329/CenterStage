@@ -42,7 +42,8 @@ public class CommandGroups {
 
     public static Command dropOffFirstPixel(PixelPosition pixelPosition, Alliance alliance, MecanumDriveSubsystem mecanumDriveSubsystem, ClawSubsystem clawSubsystem, ElevatorSubsystem elevatorSubsystem, Telemetry telemetry, ImuSubsystem imuSubsystem, ArmSubsystem armSubsytem) {
 
-        double allienceDirection = Alliance.BLUE.equals(alliance) ? 1.0 : -1.0;
+        double allienceDirection
+                = Alliance.BLUE.equals(alliance) ? 1.0 : -1.0;
 
 
         Command turnLeft = new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, 90 * allienceDirection);

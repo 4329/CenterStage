@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -57,6 +58,15 @@ public class RedAuto extends CommandOpMode {
         EncoderDriveCommand driveToStart = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 6);
 
 
-        schedule(new SequentialCommandGroup(reset, new WaitCommand(250), closeclaw, see.withTimeout(1000)));    }
+
+        schedule(new SequentialCommandGroup(
+                        new InstantCommand(imuSubsystem::reset,imuSubsystem),  // reset imu
+                        // new ArmPositionCommand(armSubsystem, ArmPosition.OUT), // raise arm for lights
+                        // new WaitCommand(5000),
+                        reset,  // Reset elevator
+                        new WaitCommand(250),
+                        closeclaw,
+                        see.withTimeout(1000)));
+    }
 
 }

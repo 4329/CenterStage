@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.commands;
 
+import android.util.Log;
+
 import com.arcrobotics.ftclib.command.CommandBase;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -25,6 +27,7 @@ public class ArmPositionCommand extends CommandBase {
     @Override
     public void initialize() {
         armSubsystem.goToPosition(armPosition);
+        Log.i(this.getName(), "initialize: Moving to position "+armPosition);
     }
 
 
@@ -36,6 +39,8 @@ public class ArmPositionCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
+        Log.i(this.getName(), "isFinished: Arm Position "+ armSubsystem.getPosition());
+        Log.i(this.getName(), "isFinished: armAtPosition "+armSubsystem.armAtPosition());
         return armSubsystem.armAtPosition();
     }
 }

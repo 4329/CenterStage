@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import android.util.Log;
+
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
@@ -25,7 +27,8 @@ public class ImuSubsystem extends SubsystemBase {
         imu = hardwareMap.get(IMU.class, "imu");
         this.telemetry = telemetry;
         imu.initialize(new IMU.Parameters(orientationOnRobot));
-        imu.resetYaw();
+        reset();
+        // imu.resetYaw();
     }
 
     public void imuTelemetry() {
@@ -38,6 +41,8 @@ public class ImuSubsystem extends SubsystemBase {
         telemetry.addData("Yaw (Z) velocity", "%.2f Deg/Sec", angularVelocity.zRotationRate);
         telemetry.addData("Pitch (X) velocity", "%.2f Deg/Sec", angularVelocity.xRotationRate);
         telemetry.addData("Roll (Y) velocity", "%.2f Deg/Sec", angularVelocity.yRotationRate);
+
+        Log.i(this.getName(), "imuTelemetry: Heading " + orientation.getYaw(AngleUnit.DEGREES) );
     }
 
 
@@ -45,6 +50,10 @@ public class ImuSubsystem extends SubsystemBase {
         return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
     }
 
+    public void reset(){
+        imu.resetYaw();
+        Log.i(this.getName(), "reset: ");
+    }
     @Override
     public void periodic() {
         imuTelemetry();
