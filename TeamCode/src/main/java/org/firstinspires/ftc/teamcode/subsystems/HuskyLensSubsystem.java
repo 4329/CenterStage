@@ -1,17 +1,12 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
-import android.util.Log;
-
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.util.Alliance;
-import org.firstinspires.ftc.teamcode.util.PixelPosition;
+import org.firstinspires.ftc.teamcode.util.SpikeMark;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +18,7 @@ public class HuskyLensSubsystem extends SubsystemBase {
     private Telemetry telemetry;
     private HuskyLens.Block lastBlock;
 
-    private PixelPosition pixelPosition;
+    private SpikeMark spikeMark;
 
     public HuskyLensSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
 
@@ -62,11 +57,4 @@ public class HuskyLensSubsystem extends SubsystemBase {
         return blockList;
     }
 
-    public PixelPosition getPixelPosition() {
-        return pixelPosition;
-    }
-
-    public void setPixelPosition(PixelPosition pixelPosition) {
-        this.pixelPosition = pixelPosition;
-    }
 }

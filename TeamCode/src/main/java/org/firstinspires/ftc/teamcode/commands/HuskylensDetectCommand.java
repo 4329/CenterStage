@@ -7,7 +7,6 @@ import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.qualcomm.hardware.dfrobot.HuskyLens;
 
-import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
@@ -16,7 +15,8 @@ import org.firstinspires.ftc.teamcode.subsystems.HuskyLensSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.util.Alliance;
-import org.firstinspires.ftc.teamcode.util.PixelPosition;
+import org.firstinspires.ftc.teamcode.util.SpikeMark;
+import org.firstinspires.ftc.teamcode.util.SpikeMarkLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,24 +27,14 @@ public class HuskylensDetectCommand extends CommandBase {
     private List<HuskyLens.Block> lastBlocks;
     private Telemetry telemetry;
     private Alliance alliance;
-    private MecanumDriveSubsystem mecanumDriveSubsystem;
-    private ClawSubsystem clawSubsystem;
-    private ElevatorSubsystem elevatorSubsystem;
-    private ImuSubsystem imuSubsystem;
-    private ArmSubsystem armSubsystem;
     private int count;
     private double positionConfidence = 0.7;
 
-    public HuskylensDetectCommand(HuskyLensSubsystem huskyLensSubsystem, Telemetry telemetry, Alliance alliance, MecanumDriveSubsystem mecanumDriveSubsystem, ClawSubsystem clawSubsystem, ElevatorSubsystem elevatorSubsystem, ImuSubsystem imuSubsystem, ArmSubsystem armSubsystem) {
+    public HuskylensDetectCommand(HuskyLensSubsystem huskyLensSubsystem, Telemetry telemetry, Alliance alliance) {
         this.huskyLensSubsystem = huskyLensSubsystem;
         this.telemetry = telemetry;
         this.alliance = alliance;
 
-        this.mecanumDriveSubsystem = mecanumDriveSubsystem;
-        this.clawSubsystem = clawSubsystem;
-        this.elevatorSubsystem = elevatorSubsystem;
-        this.imuSubsystem = imuSubsystem;
-        this.armSubsystem = armSubsystem;
     }
 
     @Override
@@ -58,7 +48,6 @@ public class HuskylensDetectCommand extends CommandBase {
     @Override
     public void execute() {
         List<HuskyLens.Block> detectedBlocks = huskyLensSubsystem.detectBlocks(alliance);
-        telemetry.addLine("pixelPosition is" + huskyLensSubsystem.getPixelPosition());
         count++;
 
         Log.i("huskyBlocks", "count is" + count);
@@ -67,9 +56,12 @@ public class HuskylensDetectCommand extends CommandBase {
             Log.i("huskyBlocks", "blockRatio" + blockRatio);
             Log.i("huskyBlocks", "block coordinates" + "(" + block.x + "," + block.y + ")");
 
+            Log.i("huskyBlocks", "blockWidth" + block);
+
             if (block.width > 40) {
 
                 lastBlocks.add(block);
+
 
             }
 
@@ -95,55 +87,54 @@ public class HuskylensDetectCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
 
-        int left = 0;
-        int right = 0;
-        int center = 0;
+        int spikeOne = 0;
+        int spikeThree = 0;
+        int spikeTwo = 0;
 
         for (HuskyLens.Block block : lastBlocks) {
 
             if (block.x < 160) {
 
-                left++;
+                spikeOne++;
 
             } else {
 
-                center++;
+                spikeTwo++;
             }
 
 
         }
 
-        right = count - left - center;
+        spikeThree = count - spikeOne - spikeTwo;
         if (alliance == Alliance.RED) {
-            int temp = left;
-            left = right;
-            right = temp;
+            int temp = spikeOne;
+            spikeOne = spikeThree;
+            spikeThree = temp;
 
         }
 
-        Log.i("huskyBlocks", "left, center, right " + left + "," + center + "," + right);
+        Log.i("huskyBlocks", "spike1, spike2, spike3 " + spikeOne + "," + spikeTwo + "," + spikeThree);
 
-        PixelPosition pixelPosition;
+        SpikeMark spikeMark;
 
-        if (left > right && left > center && left / (double) count > positionConfidence) {
+        if (spikeOne > spikeThree && spikeOne > spikeTwo && spikeOne / (double) count > positionConfidence) {
 
-            pixelPosition = PixelPosition.LEFT;
+            spikeMark = SpikeMark.ONE;
 
         }
 
-        else if (right > center && right > left && right / (double) count > positionConfidence) {
+        else if (spikeThree > spikeTwo && spikeThree > spikeOne && spikeThree / (double) count > positionConfidence) {
 
-            pixelPosition = PixelPosition.RIGHT;
+            spikeMark = SpikeMark.THREE;
         }
 
         else {
 
-            pixelPosition = PixelPosition.CENTER;
+            spikeMark = SpikeMark.TWO;
         }
 
-        Command firstPixel = CommandGroups.dropOffFirstPixel(pixelPosition,  alliance,  mecanumDriveSubsystem,  clawSubsystem,  elevatorSubsystem,  telemetry,  imuSubsystem, armSubsystem);
+        SpikeMarkLocation.setCurrentSpikeMark(spikeMark);
 
-        CommandScheduler.getInstance().schedule(firstPixel);
     }
 
 
