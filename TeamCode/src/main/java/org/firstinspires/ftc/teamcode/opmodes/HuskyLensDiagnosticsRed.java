@@ -1,10 +1,11 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
+import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.qualcomm.hardware.dfrobot.HuskyLensSubsystem;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.commands.HuskylensDetectCommand;
+import org.firstinspires.ftc.teamcode.commands.HuskyLensDiagnosticsCommand;
 import org.firstinspires.ftc.teamcode.subsystems.TelemetryUpdateSubsystem;
 import org.firstinspires.ftc.teamcode.util.Alliance;
 
@@ -17,7 +18,7 @@ public class HuskyLensDiagnosticsRed extends CommandOpMode {
         huskyLensSubsystem = new HuskyLensSubsystem(hardwareMap, telemetry);
         telemetryUpdateSubsystem = new TelemetryUpdateSubsystem(telemetry);
 
-        HuskylensDetectCommand detectCommand = new HuskylensDetectCommand(huskyLensSubsystem, telemetry, Alliance.RED);
+        Command detectCommand = new HuskyLensDiagnosticsCommand(huskyLensSubsystem, telemetry, Alliance.RED);
         huskyLensSubsystem.setDefaultCommand(detectCommand);
 
         register(telemetryUpdateSubsystem);

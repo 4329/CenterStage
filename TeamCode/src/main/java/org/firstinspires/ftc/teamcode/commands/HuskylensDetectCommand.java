@@ -17,12 +17,12 @@ import java.util.List;
 public class HuskylensDetectCommand extends CommandBase {
 
     private HuskyLensSubsystem huskyLensSubsystem;
-    private List<HuskyLens.Block> lastBlocks = new ArrayList<>();
+    protected List<HuskyLens.Block> lastBlocks = new ArrayList<>();
     private Telemetry telemetry;
     private Alliance alliance;
-    private int count = 0;
+    protected int count = 0;
     private double positionConfidence = 0.7;
-    private List<Double> ratios = new ArrayList<>();
+    protected List<Double> ratios = new ArrayList<>();
 
     public HuskylensDetectCommand(HuskyLensSubsystem huskyLensSubsystem, Telemetry telemetry, Alliance alliance) {
         this.huskyLensSubsystem = huskyLensSubsystem;
@@ -47,7 +47,7 @@ public class HuskylensDetectCommand extends CommandBase {
         for (HuskyLens.Block block : detectedBlocks) {
             double blockRatio =  (double) block.height / (double) block.width;
             Log.i("huskyBlocks", "block -> " + block);
-            Log.i("huskyBlocks", "blockRatio" + blockRatio);
+            Log.i("huskyBlocks", "blockRatio: " + blockRatio);
             huskyLensSubsystem.addTelemetryMessage("block[" + count + "] h/w ratio: " + blockRatio);
 
             if (block.width > 40) {
@@ -55,7 +55,6 @@ public class HuskylensDetectCommand extends CommandBase {
             }
         }
     }
-
 
     @Override
     public boolean isFinished() {
@@ -69,7 +68,10 @@ public class HuskylensDetectCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         huskyLensSubsystem.savePicture();
+        summary();
+    }
 
+    public void summary() {
         int spikeOne = 0;
         int spikeThree = 0;
         int spikeTwo = 0;
