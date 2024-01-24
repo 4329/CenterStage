@@ -2,18 +2,11 @@ package org.firstinspires.ftc.teamcode.commands;
 
 import android.util.Log;
 
-import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandBase;
-import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.qualcomm.hardware.dfrobot.HuskyLens;
+import com.qualcomm.hardware.dfrobot.HuskyLensSubsystem;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.ElevatorSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.HuskyLensSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.ImuSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.util.Alliance;
 import org.firstinspires.ftc.teamcode.util.SpikeMark;
 import org.firstinspires.ftc.teamcode.util.SpikeMarkLocation;
@@ -34,15 +27,12 @@ public class HuskylensDetectCommand extends CommandBase {
         this.huskyLensSubsystem = huskyLensSubsystem;
         this.telemetry = telemetry;
         this.alliance = alliance;
-
     }
 
     @Override
     public void initialize() {
-
         this.lastBlocks = new ArrayList<>();
         count = 0;
-
     }
 
     @Override
@@ -53,56 +43,39 @@ public class HuskylensDetectCommand extends CommandBase {
         Log.i("huskyBlocks", "count is" + count);
         for (HuskyLens.Block block : detectedBlocks) {
             double blockRatio =  (double) block.height / (double) block.width;
+            Log.i("huskyBlocks", "block -> " + block);
             Log.i("huskyBlocks", "blockRatio" + blockRatio);
-            Log.i("huskyBlocks", "block coordinates" + "(" + block.x + "," + block.y + ")");
-
-            Log.i("huskyBlocks", "blockWidth" + block);
 
             if (block.width > 40) {
-
                 lastBlocks.add(block);
-
-
             }
-
         }
-
     }
 
 
     @Override
     public boolean isFinished() {
-
         if (count >= 15) {
-
             return true;
         } else {
-
             return false;
-
         }
-
     }
 
     @Override
     public void end(boolean interrupted) {
+        huskyLensSubsystem.savePicture();
 
         int spikeOne = 0;
         int spikeThree = 0;
         int spikeTwo = 0;
 
         for (HuskyLens.Block block : lastBlocks) {
-
             if (block.x < 160) {
-
                 spikeOne++;
-
             } else {
-
                 spikeTwo++;
             }
-
-
         }
 
         spikeThree = count - spikeOne - spikeTwo;
@@ -110,33 +83,21 @@ public class HuskylensDetectCommand extends CommandBase {
             int temp = spikeOne;
             spikeOne = spikeThree;
             spikeThree = temp;
-
         }
 
         Log.i("huskyBlocks", "spike1, spike2, spike3 " + spikeOne + "," + spikeTwo + "," + spikeThree);
 
         SpikeMark spikeMark;
-
         if (spikeOne > spikeThree && spikeOne > spikeTwo && spikeOne / (double) count > positionConfidence) {
-
             spikeMark = SpikeMark.ONE;
-
         }
-
         else if (spikeThree > spikeTwo && spikeThree > spikeOne && spikeThree / (double) count > positionConfidence) {
-
             spikeMark = SpikeMark.THREE;
         }
-
         else {
-
             spikeMark = SpikeMark.TWO;
         }
 
         SpikeMarkLocation.setCurrentSpikeMark(spikeMark);
-
     }
-
-
-
 }
