@@ -17,22 +17,25 @@ import java.util.List;
 public class HuskylensDetectCommand extends CommandBase {
 
     private HuskyLensSubsystem huskyLensSubsystem;
-    private List<HuskyLens.Block> lastBlocks;
+    protected List<HuskyLens.Block> lastBlocks = new ArrayList<>();
     private Telemetry telemetry;
     private Alliance alliance;
-    private int count;
+    protected int count = 0;
     private double positionConfidence = 0.7;
+    protected List<Double> ratios = new ArrayList<>();
 
     public HuskylensDetectCommand(HuskyLensSubsystem huskyLensSubsystem, Telemetry telemetry, Alliance alliance) {
         this.huskyLensSubsystem = huskyLensSubsystem;
         this.telemetry = telemetry;
         this.alliance = alliance;
+        addRequirements(huskyLensSubsystem);
     }
 
     @Override
     public void initialize() {
         this.lastBlocks = new ArrayList<>();
         count = 0;
+        ratios.clear();
     }
 
     @Override
@@ -44,14 +47,14 @@ public class HuskylensDetectCommand extends CommandBase {
         for (HuskyLens.Block block : detectedBlocks) {
             double blockRatio =  (double) block.height / (double) block.width;
             Log.i("huskyBlocks", "block -> " + block);
-            Log.i("huskyBlocks", "blockRatio" + blockRatio);
+            Log.i("huskyBlocks", "blockRatio: " + blockRatio);
+            huskyLensSubsystem.addTelemetryMessage("block[" + count + "] h/w ratio: " + blockRatio);
 
             if (block.width > 40) {
                 lastBlocks.add(block);
             }
         }
     }
-
 
     @Override
     public boolean isFinished() {
@@ -65,7 +68,10 @@ public class HuskylensDetectCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         huskyLensSubsystem.savePicture();
+        summary();
+    }
 
+    public void summary() {
         int spikeOne = 0;
         int spikeThree = 0;
         int spikeTwo = 0;
@@ -86,15 +92,26 @@ public class HuskylensDetectCommand extends CommandBase {
         }
 
         Log.i("huskyBlocks", "spike1, spike2, spike3 " + spikeOne + "," + spikeTwo + "," + spikeThree);
+        huskyLensSubsystem.addTelemetryMessage("spike1, spike2, spike3 " + spikeOne + ", " + spikeTwo + ", " + spikeThree);
+
+        double oneConf = spikeOne / (double) count;
+        double twoConf = spikeTwo / (double) count;
+        double threeConf = spikeThree / (double) count;
+
+        Log.i("huskyBlocks", "confidence (1,2,3): " + oneConf + ", " + twoConf + ", " + threeConf);
+        huskyLensSubsystem.addTelemetryMessage("confidence (1,2,3): " + oneConf + ", " + twoConf + ", " + threeConf);
 
         SpikeMark spikeMark;
         if (spikeOne > spikeThree && spikeOne > spikeTwo && spikeOne / (double) count > positionConfidence) {
+            huskyLensSubsystem.addTelemetryMessage("SPIKE MARK: ONE");
             spikeMark = SpikeMark.ONE;
         }
         else if (spikeThree > spikeTwo && spikeThree > spikeOne && spikeThree / (double) count > positionConfidence) {
+            huskyLensSubsystem.addTelemetryMessage("SPIKE MARK: THREE");
             spikeMark = SpikeMark.THREE;
         }
         else {
+            huskyLensSubsystem.addTelemetryMessage("SPIKE MARK: TWO");
             spikeMark = SpikeMark.TWO;
         }
 
