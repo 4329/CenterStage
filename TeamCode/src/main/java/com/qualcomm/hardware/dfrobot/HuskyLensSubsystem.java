@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.util.Alliance;
-import org.firstinspires.ftc.teamcode.util.SpikeMark;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +17,6 @@ public class HuskyLensSubsystem extends SubsystemBase {
 
     private Telemetry telemetry;
     private HuskyLens.Block lastBlock;
-
-    private SpikeMark spikeMark;
 
     private List<String> telemetryMessages = new ArrayList<>();
 
@@ -33,7 +30,6 @@ public class HuskyLensSubsystem extends SubsystemBase {
     }
 
     public List<HuskyLens.Block> detectBlocks(Alliance alliance) {
-        //telemetryMessages.clear();
         List <HuskyLens.Block> blockList = new ArrayList<>();
         HuskyLens.Block[] blocks = huskyLens.blocks();
         Log.i("huskyBlocks", "Block count: " + blocks.length);
@@ -59,6 +55,11 @@ public class HuskyLensSubsystem extends SubsystemBase {
     public void savePicture() {
         huskyLens.sendCommand((byte)0x39);
     }
+
+    public void clearMessages() {
+        telemetryMessages.clear();
+    }
+
     public void addTelemetryMessage(String msg) {
         telemetryMessages.add(msg);
     }
@@ -68,9 +69,5 @@ public class HuskyLensSubsystem extends SubsystemBase {
         for (String msg : telemetryMessages) {
             telemetry.addData(msg, "");
         }
-    }
-
-    public void clearMessages() {
-        telemetryMessages.clear();
     }
 }
