@@ -8,14 +8,10 @@ import org.firstinspires.ftc.teamcode.util.Alliance;
 public class HuskyLensDiagnosticsCommand extends HuskylensDetectCommand {
 
     private final HuskyLensSubsystem huskyLensSubsystem;
-    private final Telemetry telemetry;
-    private final Alliance alliance;
 
     public HuskyLensDiagnosticsCommand(HuskyLensSubsystem huskyLensSubsystem, Telemetry telemetry, Alliance alliance) {
         super(huskyLensSubsystem, telemetry, alliance);
         this.huskyLensSubsystem = huskyLensSubsystem;
-        this.telemetry = telemetry;
-        this.alliance = alliance;
     }
 
     @Override

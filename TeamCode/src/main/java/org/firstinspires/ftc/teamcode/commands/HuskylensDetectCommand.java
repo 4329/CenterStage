@@ -48,7 +48,7 @@ public class HuskylensDetectCommand extends CommandBase {
             double blockRatio =  (double) block.height / (double) block.width;
             Log.i("huskyBlocks", "block -> " + block);
             Log.i("huskyBlocks", "blockRatio: " + blockRatio);
-            huskyLensSubsystem.addTelemetryMessage("block[" + count + "] h/w ratio: " + blockRatio);
+            huskyLensSubsystem.addTelemetryMessage("block[" + count + "] -> " + block);
 
             if (block.width > 40) {
                 lastBlocks.add(block);
