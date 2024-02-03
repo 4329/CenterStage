@@ -25,7 +25,7 @@ public class ImuSubsystem extends SubsystemBase {
         imu = hardwareMap.get(IMU.class, "imu");
         this.telemetry = telemetry;
         imu.initialize(new IMU.Parameters(orientationOnRobot));
-        imu.resetYaw();
+        reset();
     }
 
     public void imuTelemetry() {
@@ -49,5 +49,9 @@ public class ImuSubsystem extends SubsystemBase {
     public void periodic() {
         imuTelemetry();
 
+    }
+
+    public void reset(){
+        imu.resetYaw();
     }
 }
