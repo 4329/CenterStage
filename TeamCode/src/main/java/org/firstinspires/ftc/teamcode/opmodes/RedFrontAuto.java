@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.commands.CommandGroups;
 import org.firstinspires.ftc.teamcode.commands.ElevatorResetCommand;
 import org.firstinspires.ftc.teamcode.commands.HuskylensDetectCommand;
+import org.firstinspires.ftc.teamcode.commands.InitializeNavxCommand;
 import org.firstinspires.ftc.teamcode.commands.UnInstantCommand;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
@@ -47,10 +48,11 @@ public class RedFrontAuto extends CommandOpMode {
         armSubsystem = new ArmSubsystem(hardwareMap, telemetry);
         Command closeclaw = new UnInstantCommand(()-> clawSubsystem.close());
         Command see = new HuskylensDetectCommand(huskyLensSubsystem,  telemetry, Alliance.RED);
-        Command reset = new ElevatorResetCommand(elevatorSubsystem, telemetry);
+        Command resetElevator = new ElevatorResetCommand(elevatorSubsystem, telemetry);
+        Command resetImu = new InitializeNavxCommand(imuSubsystem, telemetry);
         Command scoreTheSpike = CommandGroups.driveToDesiredFrontSpikeMark(Alliance.RED, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry, imuSubsystem);
 
-        schedule(new SequentialCommandGroup(reset, new WaitCommand(250), closeclaw, see.withTimeout(1500), scoreTheSpike));
+        schedule(new SequentialCommandGroup(resetImu.withTimeout(5000), resetElevator, new WaitCommand(250), closeclaw, see.withTimeout(1500), scoreTheSpike));
     }
 
 }

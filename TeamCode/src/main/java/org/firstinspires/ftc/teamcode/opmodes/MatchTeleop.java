@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.commands.CommandGroups;
 import org.firstinspires.ftc.teamcode.commands.ElevatorResetCommand;
 import org.firstinspires.ftc.teamcode.commands.ElevatorVerticalCommand;
 import org.firstinspires.ftc.teamcode.commands.FireZeMisslizCommand;
+import org.firstinspires.ftc.teamcode.commands.InitializeNavxCommand;
 import org.firstinspires.ftc.teamcode.commands.MecanumDpadCommand;
 import org.firstinspires.ftc.teamcode.commands.MecanumDriveCommand;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
@@ -92,6 +93,6 @@ public class MatchTeleop extends CommandOpMode {
 
         register(imuSubsystem, telemetryUpdateSubsystem);
 
-        schedule(new ElevatorResetCommand(elevatorSubsystem, telemetry));
+        schedule(new InitializeNavxCommand(imuSubsystem, telemetry), new ElevatorResetCommand(elevatorSubsystem, telemetry));
     }
 }
