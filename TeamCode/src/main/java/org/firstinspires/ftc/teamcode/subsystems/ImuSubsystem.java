@@ -18,7 +18,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 public class ImuSubsystem extends SubsystemBase {
     private NavxMicroNavigationSensor navxMicro;
     private Telemetry telemetry;
-
+    private double resetOffset=0;
     public ImuSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
         navxMicro = hardwareMap.get(NavxMicroNavigationSensor.class, "navx");
         this.telemetry = telemetry;
@@ -42,7 +42,7 @@ public class ImuSubsystem extends SubsystemBase {
 
     public double getHeading() {
         Orientation angularOrientation = navxMicro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        return angularOrientation.firstAngle;
+        return angularOrientation.firstAngle+ this.resetOffset;
     }
 
     @Override
@@ -51,6 +51,10 @@ public class ImuSubsystem extends SubsystemBase {
     }
 
     public void reset(){
+        double measuredHeading = navxMicro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+        // https://pdocs.kauailabs.com/navx-micro/guidance/yaw-drift/ recommends adding offset to "reset"
+        // should only drift 1 degree a minute when moving, or .1 degree a minute when still
+        this.resetOffset= -measuredHeading;
         // call initialize again??
         //navxMicro.initialize();
     }
