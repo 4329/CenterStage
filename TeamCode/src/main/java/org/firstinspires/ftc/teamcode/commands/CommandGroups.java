@@ -50,14 +50,15 @@ public class CommandGroups {
         EncoderDriveCommand strafe1 = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35  * allienceDirection, 10);
         EncoderDriveCommand strafeRightToLeftPixel = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, 0.35  * allienceDirection, 27.5);
 
-        Command turnLeft = new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, 90 * allienceDirection);
+        Command turnToBack= new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, 90 * allienceDirection);
 
         Command openclaw = new UnInstantCommand(()-> clawSubsystem.open());
         Command closeclaw = new UnInstantCommand(()-> clawSubsystem.close());
         Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.PICKONEPPIXEL, telemetry);
 
 
-        return new SequentialCommandGroup(firstDrive, turnLeft,
+        return new SequentialCommandGroup(firstDrive,
+                turnToBack,
                 new WaitCommand(75),
                 drive1,
                 strafeRightToLeftPixel,
@@ -137,8 +138,8 @@ public class CommandGroups {
 
         EncoderDriveCommand strafe = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35 * allienceDirection, 24);
         EncoderDriveCommand driveforward = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 3.75);
-        EncoderDriveCommand firstDrive = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 24);
-        EncoderDriveCommand drive = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 40);
+        EncoderDriveCommand firstDrive = new EncoderDriveCommand(mecanumDriveSubsystem,imuSubsystem, -.35, 0, 0, 24);
+        EncoderDriveCommand drive = new EncoderDriveCommand(mecanumDriveSubsystem,imuSubsystem, -.35, 0, 0, 40);
 
 
         EncoderDriveCommand backUp2 = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 10);
@@ -187,27 +188,43 @@ public class CommandGroups {
 
         Log.i("HuskyBlocks", "FrontStage1");
 
-        EncoderDriveCommand driveforward = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 3.75);
-        EncoderDriveCommand firstDrive = new EncoderDriveCommand(mecanumDriveSubsystem, -.35, 0, 0, 24);
+        EncoderDriveCommand driveTowardBack = new EncoderDriveCommand(mecanumDriveSubsystem,imuSubsystem, 90,-.35, 0, 0, 3.75);
+        EncoderDriveCommand firstDrive = new EncoderDriveCommand(mecanumDriveSubsystem,imuSubsystem,
+                0,-.25, 0, 0, 25);
 
-        EncoderDriveCommand backUp2 = new EncoderDriveCommand(mecanumDriveSubsystem, .35, 0, 0, 6);
+        EncoderDriveCommand backUp2 = new EncoderDriveCommand(mecanumDriveSubsystem, imuSubsystem,
+                90,.25, 0, 0, 3);
 
-        Command turnLeft = new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, 90 * allienceDirection);
+        Command turnToBack = new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry,
+                90 * allienceDirection);
 
         Command openclaw = new UnInstantCommand(() -> clawSubsystem.open());
-        Command upounopixelo = new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.FIRSTSTAGE, telemetry);
+
+        Command elevateFirstStage = new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.FIRSTSTAGE, telemetry);
         Command elevatorDown = new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.DOWN, telemetry);
 
+        Command strafeToRow3 = new EncoderDriveCommand(mecanumDriveSubsystem,
+                imuSubsystem,90,0, 0, .4, 28);
+        Command driveToBackStage = new EncoderDriveCommand(mecanumDriveSubsystem,
+                imuSubsystem,90,-.45, 0, 0, 66);
+        Command strafeBackDrop = new EncoderDriveCommand(mecanumDriveSubsystem,
+                imuSubsystem,90,0, 0, -.4, 28);
 
-        return new SequentialCommandGroup(firstDrive, turnLeft,
+        return new SequentialCommandGroup(
+                firstDrive,
+                turnToBack,
                 new WaitCommand(75),
-                driveforward,
+                driveTowardBack,
                 openclaw,
                 new WaitCommand(750),
-                upounopixelo,
+                elevateFirstStage,
                 new WaitCommand(400),
                 backUp2,
-                elevatorDown
+                elevatorDown,
+                strafeToRow3,
+                driveToBackStage,
+                strafeBackDrop,
+                new WaitCommand(10)
         );
     }
 
@@ -247,7 +264,7 @@ public class CommandGroups {
         Log.i("HuskyBlocks", "frontStage3");
         double allienceDirection = Alliance.BLUE.equals(alliance) ? 1.0 : -1.0;
 
-        EncoderDriveCommand firstDrive = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 2.5);
+        EncoderDriveCommand firstDrive = new EncoderDriveCommand(mecanumDriveSubsystem, imuSubsystem,-0.35, 0, 0, 2.5);
         EncoderDriveCommand drive1 = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 1.5);
 
         EncoderDriveCommand backUp1 = new EncoderDriveCommand(mecanumDriveSubsystem, 0.35, 0, 0, 1.25);
@@ -266,7 +283,10 @@ public class CommandGroups {
         Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.FIRSTSTAGE, telemetry);
         Command elevatorDown = new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.DOWN, telemetry);
 
-        return new SequentialCommandGroup(firstDrive, strafe1, turnRight,
+        return new SequentialCommandGroup(
+                firstDrive,
+                strafe1,
+                turnRight,
                 new WaitCommand(75),
                 backUp2,
                 strafeRightToLeftPixel,
@@ -276,12 +296,18 @@ public class CommandGroups {
                 upounopixelo,
                 new WaitCommand(400),
                 backUp1,
-                elevatorDown
+                elevatorDown,
+                new WaitCommand(10)
 
         );
     }
 
-    public static Command driveToDesiredFrontSpikeMark(Alliance alliance, MecanumDriveSubsystem mecanumDriveSubsystem, ClawSubsystem clawSubsystem, ElevatorSubsystem elevatorSubsystem, Telemetry telemetry, ImuSubsystem imuSubsystem) {
+    public static Command driveToDesiredFrontSpikeMark(Alliance alliance,
+                                                       MecanumDriveSubsystem mecanumDriveSubsystem,
+                                                       ClawSubsystem clawSubsystem,
+                                                       ElevatorSubsystem elevatorSubsystem,
+                                                       Telemetry telemetry,
+                                                       ImuSubsystem imuSubsystem) {
         return new SelectCommand(new HashMap<Object, Command>() {{
             put(SpikeMark.ONE, frontSpike1(alliance, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry, imuSubsystem));
             put(SpikeMark.TWO, frontSpike2(alliance, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry, imuSubsystem));
