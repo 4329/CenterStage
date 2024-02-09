@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.commands;
 import android.util.Log;
 
 import com.arcrobotics.ftclib.command.CommandBase;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSubsystem;
@@ -23,14 +24,14 @@ public class TurnToHeadingCommand extends CommandBase {
         this.imu = imuSubsystem;
         this.telemetry = telemetry;
         this.DesiredAngle = DesiredAngle;
-        this.frcPid = new FrcPidController(0.025, 0, 0.00095); //kd was 0.000075
+        this.frcPid = new FrcPidController(0.035, .00, 0.00125); //kd was 0.000075
         addRequirements(mecanumDriveSubsystem);
     }
 
     @Override
     public void initialize() {
         frcPid.setSetpoint(DesiredAngle);
-        frcPid.setTolerance(0.5);
+        frcPid.setTolerance(0.2);
         frcPid.enableContinuousInput(-180, 180);
         Log.i("turnCommand", "turnstarting");
 
@@ -42,6 +43,7 @@ public class TurnToHeadingCommand extends CommandBase {
         telemetry.addLine("is going");
         double heading = imu.getHeading();
         double output = frcPid.calculate(heading);
+        output = Range.clip(output,-.5,.5);
         drive.drive(0, -output, 0);
         Log.i("turnCommand", "desired angle, heading, output " + "(" + DesiredAngle + ", " + heading + ", " + output + ")");
     }
