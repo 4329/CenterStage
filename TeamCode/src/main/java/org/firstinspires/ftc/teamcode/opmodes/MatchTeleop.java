@@ -66,7 +66,6 @@ public class MatchTeleop extends CommandOpMode {
                 () -> driver.getButton(GamepadKeys.Button.A),
                 telemetry);
 
-        driver.getGamepadButton(GamepadKeys.Button.B).whenPressed(new AprilCamCommand(webcamSubsystem, mecanumDriveSubsystem, telemetry, 2));
         driver.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT).whileHeld(new MecanumDpadCommand(mecanumDriveSubsystem,() -> driver.getButton(GamepadKeys.Button.B),0, 1, telemetry));
         driver.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whileHeld(new MecanumDpadCommand(mecanumDriveSubsystem,() -> driver.getButton(GamepadKeys.Button.B),1, 0, telemetry));
         driver.getGamepadButton(GamepadKeys.Button.DPAD_UP).whileHeld(new MecanumDpadCommand(mecanumDriveSubsystem,() -> driver.getButton(GamepadKeys.Button.B),-1, 0, telemetry));

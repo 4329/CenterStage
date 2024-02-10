@@ -8,6 +8,7 @@ import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SelectCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
+import com.arcrobotics.ftclib.command.WaitUntilCommand;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
@@ -15,6 +16,7 @@ import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ElevatorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.WebcamSubsystem;
 import org.firstinspires.ftc.teamcode.util.Alliance;
 import org.firstinspires.ftc.teamcode.util.ArmPosition;
 import org.firstinspires.ftc.teamcode.util.ElevatorPosition;
@@ -46,11 +48,11 @@ public class CommandGroups {
         EncoderDriveCommand backUp1 = new EncoderDriveCommand(mecanumDriveSubsystem, 0.35, 0, 0, 3);
         EncoderDriveCommand backUp2 = new EncoderDriveCommand(mecanumDriveSubsystem, 0.35, 0, 0, 6);
 
-        EncoderDriveCommand strafe = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35  * allienceDirection, 17);
-        EncoderDriveCommand strafe1 = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35  * allienceDirection, 10);
-        EncoderDriveCommand strafeRightToLeftPixel = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, 0.35  * allienceDirection, 27.5);
+        EncoderDriveCommand strafe = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35 * allienceDirection, 17);
+        EncoderDriveCommand strafe1 = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35 * allienceDirection, 10);
+        EncoderDriveCommand strafeRightToLeftPixel = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, 0.35 * allienceDirection, 27.5);
 
-        Command turnToBack= new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, 90 * allienceDirection);
+        Command turnToBack = new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, 90 * allienceDirection);
 
         Command openclaw = new UnInstantCommand(()-> clawSubsystem.open());
         Command closeclaw = new UnInstantCommand(()-> clawSubsystem.close());
@@ -359,7 +361,6 @@ public class CommandGroups {
         );
     }
 
-    ///////////////////////////////////////////////////
     public static Command driveToDesiredFrontSpikeMark(Alliance alliance,
                                                        MecanumDriveSubsystem mecanumDriveSubsystem,
                                                        ClawSubsystem clawSubsystem,
@@ -370,8 +371,47 @@ public class CommandGroups {
             put(SpikeMark.ONE, frontSpike1(alliance, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry, imuSubsystem));
             put(SpikeMark.TWO, frontSpike2(alliance, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry, imuSubsystem));
             put(SpikeMark.THREE, frontSpike3(alliance, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry, imuSubsystem));
-          }},
-          SpikeMarkLocation::getCurrentSpikeMark
+        }},
+                SpikeMarkLocation::getCurrentSpikeMark
         );
     }
+
+
+
+    public static Command aprilTagScore(Alliance alliance, MecanumDriveSubsystem mecanumDriveSubsystem, WebcamSubsystem webcamSubsystem, ElevatorSubsystem elevatorSubsystem, ArmSubsystem armSubsystem, ClawSubsystem clawSubsystem, Telemetry telemetry) {
+
+        Command cam = new AprilCamCommand(webcamSubsystem, mecanumDriveSubsystem, telemetry, alliance);
+        Command elevator = new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.APRILSTAGE, telemetry);
+        Command elevatordown = new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.DOWN, telemetry);
+
+        Command arm = new ArmPositionCommand(armSubsystem, ArmPosition.OUT);
+        Command armin = new ArmPositionCommand(armSubsystem, ArmPosition.IN);
+
+        Command openclaw = new UnInstantCommand(clawSubsystem::open);
+        EncoderDriveCommand strafe = new EncoderDriveCommand(mecanumDriveSubsystem, 0, 0, -0.35, 6.5);
+        EncoderDriveCommand drive1 = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 4);
+        EncoderDriveCommand backup  = new EncoderDriveCommand(mecanumDriveSubsystem, 0.35, 0, 0, 4);
+
+
+
+
+        return new SequentialCommandGroup(
+
+                new ParallelCommandGroup(elevator, arm),
+
+                cam.withTimeout(5000),
+                new WaitCommand(100),
+
+                strafe,
+                drive1,
+                openclaw,
+                new WaitCommand(750),
+                backup,
+                armin,
+                elevatordown
+
+            );
+
+    }
+
 }

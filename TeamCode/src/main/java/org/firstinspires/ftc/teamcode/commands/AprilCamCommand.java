@@ -10,6 +10,8 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.WebcamSubsystem;
+import org.firstinspires.ftc.teamcode.util.Alliance;
+import org.firstinspires.ftc.teamcode.util.SpikeMarkLocation;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
 import java.util.List;
@@ -31,17 +33,19 @@ public class AprilCamCommand extends CommandBase {
     final double MAX_AUTO_SPEED = 0.5;
     final double MAX_AUTO_STRAFE= 0.5;
     final double MAX_AUTO_TURN  = 0.3;
-    private double DESIRED_DISTANCE = 10;
+    private double DESIRED_DISTANCE = 8;
 
-    private double rangeError;
+    private double rangeError = Double.POSITIVE_INFINITY;
+    private Alliance alliance;
 
-    public AprilCamCommand(WebcamSubsystem webcamSubsystem, MecanumDriveSubsystem mecanumDriveSubsystem, Telemetry telemetry, int taggy) {
+    public AprilCamCommand(WebcamSubsystem webcamSubsystem, MecanumDriveSubsystem mecanumDriveSubsystem, Telemetry telemetry, Alliance alliance) {
 
 
         this.taggy = taggy;
         this.mecanumDriveSubsystem = mecanumDriveSubsystem;
         this.webcamSubsystem = webcamSubsystem;
         this.telemetry = telemetry;
+        this.alliance = alliance;
         addRequirements(mecanumDriveSubsystem, webcamSubsystem);
 
 
@@ -50,7 +54,7 @@ public class AprilCamCommand extends CommandBase {
     @Override
     public void initialize() {
 
-
+        taggy = SpikeMarkLocation.getCurrentSpikeMark().aprilTag(alliance);
 
     }
 
@@ -101,7 +105,7 @@ public class AprilCamCommand extends CommandBase {
     @Override
     public boolean isFinished() {
 
-        if (rangeError < 0.5) {
+        if (rangeError < 1) {
 
             return true;
 
