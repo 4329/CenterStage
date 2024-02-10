@@ -174,15 +174,30 @@ public class CommandGroups {
     }
 
     public static Command driveToDesiredSpikeMark(Alliance alliance, MecanumDriveSubsystem mecanumDriveSubsystem, ClawSubsystem clawSubsystem, ElevatorSubsystem elevatorSubsystem, Telemetry telemetry, ImuSubsystem imuSubsystem, ArmSubsystem armSubsystem) {
-        return new SelectCommand(new HashMap<Object, Command>() {{
-            put (SpikeMark.ONE, dropOffSpike1(alliance, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry, imuSubsystem));
-            put (SpikeMark.TWO, dropOffSpike2(alliance, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry, imuSubsystem, armSubsystem));
-            put (SpikeMark.THREE, dropOffSpike3(alliance, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry, imuSubsystem));
-          }},
-          SpikeMarkLocation::getCurrentSpikeMark
-        );
+        if (Alliance.BLUE == alliance){
+            return new SelectCommand(new HashMap<Object, Command>() {{
+                put (SpikeMark.ONE, dropOffSpike1(alliance, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry, imuSubsystem));
+                put (SpikeMark.TWO, dropOffSpike2(alliance, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry, imuSubsystem, armSubsystem));
+                put (SpikeMark.THREE, dropOffSpike3(alliance, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry, imuSubsystem));
+            }},
+                    SpikeMarkLocation::getCurrentSpikeMark
+            );
+        }
+        else {
+            return new SelectCommand(new HashMap<Object, Command>() {{
+                put (SpikeMark.THREE, dropOffSpike1(alliance, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry, imuSubsystem));
+                put (SpikeMark.TWO, dropOffSpike2(alliance, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry, imuSubsystem, armSubsystem));
+                put (SpikeMark.ONE, dropOffSpike3(alliance, mecanumDriveSubsystem, clawSubsystem, elevatorSubsystem, telemetry, imuSubsystem));
+            }},
+                    SpikeMarkLocation::getCurrentSpikeMark
+            );
+        }
+
+
     }
 
+
+    ////////////////////////////// Front Spike 1
     public static Command frontSpike1(Alliance alliance, MecanumDriveSubsystem mecanumDriveSubsystem, ClawSubsystem clawSubsystem, ElevatorSubsystem elevatorSubsystem, Telemetry telemetry, ImuSubsystem imuSubsystem) {
         double allienceDirection = Alliance.BLUE.equals(alliance) ? 1.0 : -1.0;
 
@@ -212,13 +227,13 @@ public class CommandGroups {
 
         return new SequentialCommandGroup(
                 // Strafe toward center of spike square
-                new EncoderDriveCommand(mecanumDriveSubsystem,imuSubsystem, 0,0, 0, -.25*allienceDirection, 3),
+                new EncoderDriveCommand(mecanumDriveSubsystem,imuSubsystem, 0,0, 0, -.25*allienceDirection, 2),
                 // Drive to spike square
-                new EncoderDriveCommand(mecanumDriveSubsystem,imuSubsystem, 0,-.25, 0, 0, 25),
+                new EncoderDriveCommand(mecanumDriveSubsystem,imuSubsystem, 0,-.25, 0, 0, 26),
                 //turn to spike 1
-                new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, 90 * allienceDirection),
+                new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, 90),
                 // Drive to spike
-                new EncoderDriveCommand(mecanumDriveSubsystem,imuSubsystem, 0,-.25, 0, 0, 3),
+                new EncoderDriveCommand(mecanumDriveSubsystem,imuSubsystem, 90,-.25, 0, 0, 3.5),
                 // Drop off one pixel
                 openclaw,
                 new WaitCommand(750),
@@ -226,16 +241,22 @@ public class CommandGroups {
                 new UnInstantCommand(clawSubsystem::close),
                 new WaitCommand(750),
                 // back away from scored pixel
-                new EncoderDriveCommand(mecanumDriveSubsystem, imuSubsystem, 90* allienceDirection,.25, 0, 0, 3),
-                strafeToRow3,
+                new EncoderDriveCommand(mecanumDriveSubsystem, imuSubsystem, 90,.25, 0, 0, 3.5),
+                // Strafe to row 3
+                new EncoderDriveCommand(mecanumDriveSubsystem, imuSubsystem,90,0, 0, .4, 28),
+                // Turn to backstage
+                new TurnToHeadingCommand(mecanumDriveSubsystem, imuSubsystem, telemetry, 90*allienceDirection),
                 // Drive to backstage
-                new EncoderDriveCommand(mecanumDriveSubsystem, imuSubsystem,90* allienceDirection,-.45, 0, 0, 66),
+                new EncoderDriveCommand(mecanumDriveSubsystem, imuSubsystem,90* allienceDirection,-.55, 0, 0, 54),
+                // Rotate to backdro
+                new TurnToHeadingCommand(mecanumDriveSubsystem,imuSubsystem,telemetry,128*allienceDirection),
                 // Stafe to front of backdrop
-                new EncoderDriveCommand(mecanumDriveSubsystem, imuSubsystem,90*allienceDirection,0, 0, -.4, 28),
+                // new EncoderDriveCommand(mecanumDriveSubsystem, imuSubsystem,90*allienceDirection,0, 0, -.4, 28),
                 new WaitCommand(10)
         );
     }
 
+    ///////////////////// Front spike 2
     public static Command frontSpike2(Alliance alliance, MecanumDriveSubsystem mecanumDriveSubsystem, ClawSubsystem clawSubsystem, ElevatorSubsystem elevatorSubsystem, Telemetry telemetry, ImuSubsystem imuSubsystem) {
 
         double allienceDirection = Alliance.BLUE.equals(alliance) ? 1.0 : -1.0;
@@ -259,11 +280,13 @@ public class CommandGroups {
 
         return new SequentialCommandGroup(
                 // Strafe to center of square
-                new EncoderDriveCommand(mecanumDriveSubsystem,imuSubsystem, 0,0, 0, -.25*allienceDirection, 3),
+                new EncoderDriveCommand(mecanumDriveSubsystem,imuSubsystem, 0,0, 0, -.25*allienceDirection, 2),
                 // Drive past spike 2
-                new EncoderDriveCommand(mecanumDriveSubsystem,imuSubsystem,0,-.35,0,0,42),
+                new EncoderDriveCommand(mecanumDriveSubsystem,imuSubsystem,0,-.35,0,0,46),
                 // spin around
                 new TurnToHeadingCommand(mecanumDriveSubsystem,imuSubsystem,telemetry,180),
+                // Drive to pixel drop off
+                new EncoderDriveCommand(mecanumDriveSubsystem,imuSubsystem,180,-.35,0,0,2),
                 // place one pixel
                 openclaw,
                 new WaitCommand(750),
@@ -271,16 +294,19 @@ public class CommandGroups {
                 new UnInstantCommand(clawSubsystem::close),
                 new WaitCommand(750),
                 // Backup to center of row 3 tile
-                new EncoderDriveCommand(mecanumDriveSubsystem,imuSubsystem,180,.35,0,0,3),
+                new EncoderDriveCommand(mecanumDriveSubsystem,imuSubsystem,180,.35,0,0,6),
                 // Turn to backstage
                 new TurnToHeadingCommand(mecanumDriveSubsystem,imuSubsystem,telemetry,90*allienceDirection),
                 // Drive to backstage
-                new EncoderDriveCommand(mecanumDriveSubsystem,imuSubsystem,90*allienceDirection,-.35,0,0,72),
-                // strafe in front of backdrop
-                new EncoderDriveCommand(mecanumDriveSubsystem,imuSubsystem,90*allienceDirection,0,0,-.35,24)
+                new EncoderDriveCommand(mecanumDriveSubsystem,imuSubsystem,90*allienceDirection,-.35,0,0,60),
+                // Turn to backdrop
+                new TurnToHeadingCommand(mecanumDriveSubsystem,imuSubsystem,telemetry,135*allienceDirection),
+                ////
+                new WaitCommand(1)
                 );
     }
 
+    ////  Front spike 3
     public static Command frontSpike3(Alliance alliance, MecanumDriveSubsystem mecanumDriveSubsystem, ClawSubsystem clawSubsystem, ElevatorSubsystem elevatorSubsystem, Telemetry telemetry, ImuSubsystem imuSubsystem) {
         Log.i("HuskyBlocks", "frontStage3");
         double allienceDirection = Alliance.BLUE.equals(alliance) ? 1.0 : -1.0;
@@ -306,13 +332,13 @@ public class CommandGroups {
 
         return new SequentialCommandGroup(
                 // Strafe to center of square
-                new EncoderDriveCommand(mecanumDriveSubsystem,imuSubsystem, 0,0, 0, -.25*allienceDirection, 3),
+                new EncoderDriveCommand(mecanumDriveSubsystem,imuSubsystem, 0,0, 0, -.25*allienceDirection, 2),
                 // Drive to spike square
-                new EncoderDriveCommand(mecanumDriveSubsystem, imuSubsystem,0,-0.35, 0, 0, 24),
+                new EncoderDriveCommand(mecanumDriveSubsystem, imuSubsystem,0,-0.35, 0, 0, 25),
                 //turn to face front
-                new TurnToHeadingCommand(mecanumDriveSubsystem,imuSubsystem,telemetry,-90*allienceDirection),
-                // Back to place pixel
-                new EncoderDriveCommand(mecanumDriveSubsystem, imuSubsystem,-90*allienceDirection,.35, 0,0, 9),
+                new TurnToHeadingCommand(mecanumDriveSubsystem,imuSubsystem,telemetry,-90),
+                // Drive to pixel
+                new EncoderDriveCommand(mecanumDriveSubsystem, imuSubsystem,-90,-.35, 0,0, 1.5),
                 // Drop off one pixel
                 openclaw,
                 new WaitCommand(750),
@@ -320,11 +346,15 @@ public class CommandGroups {
                 new UnInstantCommand(clawSubsystem::close),
                 new WaitCommand(750),
                 // backup to center of spike square
-                new EncoderDriveCommand(mecanumDriveSubsystem, imuSubsystem,-90*allienceDirection,.35, 0,0, 4),
+                new EncoderDriveCommand(mecanumDriveSubsystem, imuSubsystem,-90,.35, 0,0, 1.5),
                 //strafe to row 3
-                new EncoderDriveCommand(mecanumDriveSubsystem,imuSubsystem,-90+allienceDirection,0,0,-.35,24),
+                new EncoderDriveCommand(mecanumDriveSubsystem,imuSubsystem,-90,0,0,-.35,23),
                 // turn to backstage
                 new TurnToHeadingCommand(mecanumDriveSubsystem,imuSubsystem,telemetry,90*allienceDirection),
+                // Drive to backstage
+                new EncoderDriveCommand(mecanumDriveSubsystem,imuSubsystem,90*allienceDirection,-.75,0,0,60),
+                // Turn to back drop
+                new TurnToHeadingCommand(mecanumDriveSubsystem,imuSubsystem,telemetry,135*allienceDirection),
                 new WaitCommand(10)
         );
     }

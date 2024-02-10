@@ -50,7 +50,7 @@ public class HuskylensDetectCommand extends CommandBase {
             Log.i("huskyBlocks", "blockRatio: " + blockRatio);
             huskyLensSubsystem.addTelemetryMessage("block[" + count + "] -> " + block);
 
-            if (block.width > 40) {
+            if (block.width > 30 && block.height> 30) {
                 lastBlocks.add(block);
             }
         }
@@ -85,11 +85,11 @@ public class HuskylensDetectCommand extends CommandBase {
         }
 
         spikeThree = count - spikeOne - spikeTwo;
-        if (alliance == Alliance.RED) {
-            int temp = spikeOne;
-            spikeOne = spikeThree;
-            spikeThree = temp;
-        }
+//        if (alliance == Alliance.RED) {
+//            int temp = spikeOne;
+//            spikeOne = spikeThree;
+//            spikeThree = temp;
+//        }
 
         Log.i("huskyBlocks", "spike1, spike2, spike3 " + spikeOne + "," + spikeTwo + "," + spikeThree);
         huskyLensSubsystem.addTelemetryMessage("spike1, spike2, spike3 " + spikeOne + ", " + spikeTwo + ", " + spikeThree);
