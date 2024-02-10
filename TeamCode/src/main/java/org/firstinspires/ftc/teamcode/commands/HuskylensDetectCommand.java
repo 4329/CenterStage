@@ -40,6 +40,9 @@ public class HuskylensDetectCommand extends CommandBase {
 
     @Override
     public void execute() {
+
+        double maxY = Alliance.BLUE.equals(alliance) ? 195 : 185;
+
         List<HuskyLens.Block> detectedBlocks = huskyLensSubsystem.detectBlocks(alliance);
         count++;
 
@@ -50,7 +53,7 @@ public class HuskylensDetectCommand extends CommandBase {
             Log.i("huskyBlocks", "blockRatio: " + blockRatio);
             huskyLensSubsystem.addTelemetryMessage("block[" + count + "] -> " + block);
 
-            if (block.width > 30 && block.height> 30) {
+            if (block.width > 30 && block.height> 14 && block.y < maxY) {
                 lastBlocks.add(block);
             }
         }

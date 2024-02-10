@@ -55,6 +55,7 @@ public class AprilCamCommand extends CommandBase {
     public void initialize() {
 
         taggy = SpikeMarkLocation.getCurrentSpikeMark().aprilTag(alliance);
+        Log.i("april", "looking for " + taggy);
 
     }
 
@@ -63,6 +64,14 @@ public class AprilCamCommand extends CommandBase {
 
         List<AprilTagDetection> detections = webcamSubsystem.detectTags();
 
+        for (AprilTagDetection atd : detections) {
+
+            Log.i("april", String.format("Id is: %d range: %2.5f bearing: %2.5f yaw: 2.5f", atd.id, atd.ftcPose.range, atd.ftcPose.bearing, atd.ftcPose.yaw));
+
+
+
+
+        }
         Optional<AprilTagDetection> detection = detections.stream().filter(T -> T.id == taggy).findFirst();
 
 
