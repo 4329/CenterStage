@@ -108,7 +108,7 @@ public class CommandGroups {
             Command arm1= new ArmPositionCommand(armSubsystem, ArmPosition.OUT);
             Command arm2 = new ArmPositionCommand(armSubsystem, ArmPosition.IN);
 
-            Command elevator1 = new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.FIRSTSTAGE, telemetry);
+//            Command elevator1 = new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.FIRSTSTAGE, telemetry);
             Command elevator2 = new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.DOWN, telemetry);
 
 
@@ -208,7 +208,7 @@ public class CommandGroups {
 
         Command openclaw = new UnInstantCommand(clawSubsystem::open);
 
-        Command elevateFirstStage = new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.FIRSTSTAGE, telemetry);
+//        Command elevateFirstStage = new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.FIRSTSTAGE, telemetry);
         Command elevatorDown = new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.DOWN, telemetry);
 
         Command strafeToRow3 = new EncoderDriveCommand(mecanumDriveSubsystem,
@@ -258,14 +258,14 @@ public class CommandGroups {
         double allianceAddition = Alliance.BLUE.equals(alliance) ? 0 : 10;
 
 
-        Command elevator1 = new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.FIRSTSTAGE, telemetry);
+//        Command elevator1 = new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.FIRSTSTAGE, telemetry);
 
             Command elevator2 = new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.DOWN, telemetry);
 
         Log.i("HuskyBlocks", "FrontStage2");
 
         Command openclaw = new UnInstantCommand(clawSubsystem::open);
-        Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.FIRSTSTAGE, telemetry);
+//        Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.FIRSTSTAGE, telemetry);
         Command elevatorDown = new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.DOWN, telemetry);
 
 
