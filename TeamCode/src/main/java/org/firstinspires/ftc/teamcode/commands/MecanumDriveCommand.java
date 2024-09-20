@@ -23,14 +23,14 @@ public class MecanumDriveCommand extends CommandBase {
                                DoubleSupplier forwardDrive,
                                DoubleSupplier rotateDrive,
                                DoubleSupplier strafeDrive,
-                               BooleanSupplier speedBooost,
+                               BooleanSupplier speeedBooost,
                                BooleanSupplier slowBoost,
                                Telemetry telemetry) {
         this.mecanumDriveSubsystem = mecanumDriveSubsystem;
         this.forwardDrive = forwardDrive;
         this.rotateDrive = rotateDrive;
         this.strafeDrive = strafeDrive;
-        this.speedBooost = speedBooost;
+        this.speedBooost = speeedBooost;
         this.slowBoost = slowBoost;
         this.telemetry = telemetry;
         addRequirements(mecanumDriveSubsystem);

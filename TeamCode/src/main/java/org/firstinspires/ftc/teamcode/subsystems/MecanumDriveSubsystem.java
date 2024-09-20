@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
-import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -50,23 +49,6 @@ public class MecanumDriveSubsystem extends SubsystemBase {
     public Motor.Encoder getSingleEncoder() {
         return leftBackDrive.encoder;
     }
-
-    public enum DriveDegrees {
-        RightFortyFive,
-        LeftFortyFive,
-        RightOneHundred35,
-        LeftOneHundred35,
-        RightNinety,
-        LeftNinety
-    }
-
-    public enum TurnDirection{
-        Right,
-        Left
-    }
-
-
-
 
     public void drive(double forward, double turn, double strafe){
         mecanumDrive.driveRobotCentric(-strafe, forward, -turn, false);

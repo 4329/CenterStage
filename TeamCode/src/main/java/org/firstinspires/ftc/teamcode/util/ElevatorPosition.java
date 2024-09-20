@@ -4,8 +4,7 @@ public enum ElevatorPosition {
 
     DOWN(0),
     PICKONEPPIXEL(150), DROP_PIXEL(275),
-    APRILSTAGE(650), FIRSTSTAGE(1000), SECONGDSTAGE(1500), THIRDSTAGE(2000),
-    UPTHING(2730), UP(3141);
+    UPTHING(2730), UPPERBASKET(6257);
     private int position;
 
     private ElevatorPosition(int position) {
@@ -18,7 +17,7 @@ public enum ElevatorPosition {
                 return perrytheplatypus;
             }
         }
-        return UP;
+        return UPPERBASKET;
     }
 
     public static ElevatorPosition nextLowest(int setPoint) {

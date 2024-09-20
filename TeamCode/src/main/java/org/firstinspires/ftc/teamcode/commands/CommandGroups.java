@@ -327,7 +327,6 @@ public class CommandGroups {
 
         Command openclaw = new UnInstantCommand(clawSubsystem::open);
         Command closeclaw = new UnInstantCommand(clawSubsystem::close);
-        Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.FIRSTSTAGE, telemetry);
         Command elevatorDown = new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.DOWN, telemetry);
 
         return new SequentialCommandGroup(
@@ -381,7 +380,6 @@ public class CommandGroups {
     public static Command aprilTagScore(Alliance alliance, MecanumDriveSubsystem mecanumDriveSubsystem, WebcamSubsystem webcamSubsystem, ElevatorSubsystem elevatorSubsystem, ArmSubsystem armSubsystem, ClawSubsystem clawSubsystem, Telemetry telemetry) {
 
         Command cam = new AprilCamCommand(webcamSubsystem, mecanumDriveSubsystem, telemetry, alliance);
-        Command elevator = new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.APRILSTAGE, telemetry);
         Command elevatordown = new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.DOWN, telemetry);
 
         Command arm = new ArmPositionCommand(armSubsystem, ArmPosition.OUT);
@@ -397,7 +395,6 @@ public class CommandGroups {
 
         return new SequentialCommandGroup(
 
-                new ParallelCommandGroup(elevator, arm).withTimeout(1000),
 
                 cam.withTimeout(5000),
                 new WaitCommand(100),
