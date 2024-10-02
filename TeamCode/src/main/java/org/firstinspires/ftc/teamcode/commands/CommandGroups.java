@@ -8,7 +8,6 @@ import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SelectCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
-import com.arcrobotics.ftclib.command.WaitUntilCommand;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
@@ -61,7 +60,7 @@ public class CommandGroups {
 
         Command openclaw = new UnInstantCommand(()-> clawSubsystem.open());
         Command closeclaw = new UnInstantCommand(()-> clawSubsystem.close());
-        Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.PICKONEPPIXEL, telemetry);
+        Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.INTAKE, telemetry);
 
 
         return new SequentialCommandGroup(firstDrive,
@@ -91,7 +90,7 @@ public class CommandGroups {
 
             Command openclaw = new UnInstantCommand(()-> clawSubsystem.open());
             Command closeclaw = new UnInstantCommand(()-> clawSubsystem.close());
-            Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.PICKONEPPIXEL, telemetry);
+            Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.INTAKE, telemetry);
             EncoderDriveCommand driveToCenterPosition = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 26.5);
             EncoderDriveCommand drive1 = new EncoderDriveCommand(mecanumDriveSubsystem, -0.35, 0, 0, 33);
 
@@ -148,7 +147,7 @@ public class CommandGroups {
 
         Command openclaw = new UnInstantCommand(() -> clawSubsystem.open());
         Command closeclaw = new UnInstantCommand(() -> clawSubsystem.close());
-        Command upounopixelo = new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.PICKONEPPIXEL, telemetry);
+        Command upounopixelo = new ElevatorPosCommand(elevatorSubsystem, ElevatorPosition.INTAKE, telemetry);
 
 
         return new SequentialCommandGroup(firstDrive, turnRight,
@@ -230,7 +229,7 @@ public class CommandGroups {
                 // Drop off one pixel
                 openclaw,
                 new WaitCommand(750),
-                new ElevatorPosCommand(elevatorSubsystem,ElevatorPosition.PICKONEPPIXEL,telemetry),
+                new ElevatorPosCommand(elevatorSubsystem,ElevatorPosition.INTAKE,telemetry),
                 new UnInstantCommand(clawSubsystem::close),
                 new WaitCommand(750),
                 // back away from scored pixel
@@ -287,7 +286,7 @@ public class CommandGroups {
                 // place one pixel
                 openclaw,
                 new WaitCommand(750),
-                new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.PICKONEPPIXEL, telemetry),
+                new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.INTAKE, telemetry),
                 new UnInstantCommand(clawSubsystem::close),
                 new WaitCommand(750),
                 // Backup to center of row 3 tile
@@ -341,7 +340,7 @@ public class CommandGroups {
                 // Drop off one pixel
                 openclaw,
                 new WaitCommand(750),
-                new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.PICKONEPPIXEL, telemetry),
+                new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.INTAKE, telemetry),
                 new UnInstantCommand(clawSubsystem::close),
                 new WaitCommand(750),
                 // backup to center of spike square

@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode.util;
 public enum ElevatorPosition {
 
     DOWN(0),
-    PICKONEPPIXEL(150), DROP_PIXEL(275),
-    UPTHING(2730), UPPERBASKET(6257);
+    INTAKE(105),
+    UPTHING(2180), UPPERBASKET(6010);
     private int position;
 
     private ElevatorPosition(int position) {
@@ -19,7 +19,6 @@ public enum ElevatorPosition {
         }
         return UPPERBASKET;
     }
-
     public static ElevatorPosition nextLowest(int setPoint) {
         ElevatorPosition[] jimmyneutron = values();
         for (int i = jimmyneutron.length - 1; i >= 0; i--) {

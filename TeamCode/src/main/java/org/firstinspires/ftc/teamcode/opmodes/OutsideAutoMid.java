@@ -48,7 +48,7 @@ public class OutsideAutoMid extends CommandOpMode {
 
 
         Command openclaw = new UnInstantCommand(()-> clawSubsystem.open());
-        Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.DROP_PIXEL, telemetry);
+        Command upounopixelo = new ElevatorPosCommand (elevatorSubsystem, ElevatorPosition.INTAKE, telemetry);
         schedule(new SequentialCommandGroup(closeclaw, new WaitCommand(800), driveforward, new WaitCommand(250), openclaw, new WaitCommand(750), upounopixelo, new WaitCommand(250), closeclaw, new WaitCommand(600), backUp1));
     }
 }
